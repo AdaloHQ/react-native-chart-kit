@@ -96,6 +96,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
           {hasLegend ? (
             <Rect
               width={this.props.width / 2.5}
+              height={c.item.legendFontSize}
               x={this.props.width / 2.5}
               y={
                 -(this.props.height / 2.5) +
