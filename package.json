@@ -52,6 +52,7 @@
     "react-native-svg": "> 6.4.1"
   },
   "dependencies": {
+    "@imagemarker/use-text-width": "^0.4.4",
     "lodash": "^4.17.13",
     "paths-js": "^0.4.10",
     "point-in-polygon": "^1.0.1"

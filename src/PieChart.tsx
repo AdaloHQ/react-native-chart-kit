@@ -1,7 +1,8 @@
 import Pie from "paths-js/pie";
 import React from "react";
 import { View, ViewStyle } from "react-native";
-import { G, Path, Rect, Svg, Text } from "react-native-svg";
+import { G, Path, Rect, Svg, Text, TSpan } from "react-native-svg";
+import { useTextWidth } from "@imagemarker/use-text-width";
 
 import AbstractChart, { AbstractChartProps } from "./AbstractChart";
 
@@ -155,5 +156,19 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
     );
   }
 }
+
+const labelText = (
+  value: String,
+  name: String,
+  fontName: String,
+  fontSize: String
+) => {
+  let fullText = value + " " + name;
+  let font = fontSize + " " + fontName;
+  const fullTextWidth = useTextWidth({ text: fullText, font: font });
+  console.log(fullTextWidth);
+
+  return <TSpan x="0">{fullTextWidth}</TSpan>;
+};
 
 export default PieChart;
