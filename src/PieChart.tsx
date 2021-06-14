@@ -70,7 +70,11 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
 
       return (
         <G key={Math.random()}>
-          <Path d={c.sector.path.print()} fill={c.item.color} />
+          <Path
+            d={c.sector.path.print()}
+            fill={c.item.color}
+            onPress={c.item.action}
+          />
           {hasLegend ? (
             <Rect
               width="16px"
@@ -91,12 +95,15 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
               fill={c.item.legendFontColor}
               fontSize={c.item.legendFontSize}
               fontFamily={c.item.legendFontFamily}
+              fontWeight={c.item.legendFontWeight}
               x={this.props.width / 2.5}
               y={
                 -(this.props.height / 2.5) +
                 ((this.props.height * 0.8) / this.props.data.length) * i +
                 12 * 2
               }
+              // @ts-expect-error
+              width={this.props.width / 2.5}
             >
               {`${value} ${c.item.name}`}
             </Text>
