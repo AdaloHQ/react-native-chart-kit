@@ -110,6 +110,12 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
               width={this.props.width / 2.5}
             >
               {`${value} ${c.item.name}`}
+              {labelText(
+                value,
+                c.item.name,
+                c.item.legendFontFamily,
+                c.item.legendFontFamily + "px"
+              )}
             </Text>
           ) : null}
         </G>
