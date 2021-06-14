@@ -68,11 +68,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         }
       }
       return (
-        <G
-          key={Math.random()}
-          // @ts-expect-error
-          width={this.props.width}
-        >
+        <G key={Math.random()}>
           <Path
             d={c.sector.path.print()}
             fill={c.item.color}
@@ -99,12 +95,12 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
               fontSize={c.item.legendFontSize}
               fontFamily={c.item.legendFontFamily}
               fontWeight={c.item.legendFontWeight}
-              // x={this.props.width / 2.5}
-              // y={
-              //   -(this.props.height / 2.5) +
-              //   ((this.props.height * 0.8) / this.props.data.length) * i +
-              //   12 * 2
-              // }
+              x={this.props.width / 2.5}
+              y={
+                -(this.props.height / 2.5) +
+                ((this.props.height * 0.8) / this.props.data.length) * i +
+                12 * 2
+              }
               inlineSize={100}
               textAnchor={"start"}
               // @ts-expect-error
