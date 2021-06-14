@@ -106,6 +106,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
                 12 * 2
               }
               inlineSize={100}
+              textAnchor={"start"}
               // @ts-expect-error
               width={this.props.width / 2.5}
             >
