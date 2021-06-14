@@ -103,7 +103,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
                 12 * 2
               }
               // textAnchor={"start"}
-              width={this.props.width - this.props.width / 2.5}
+              width={this.props.width / 2.5}
             >
               {`${value} ${c.item.name}`}
             </Text>
