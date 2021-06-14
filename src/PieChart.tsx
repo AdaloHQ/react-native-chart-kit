@@ -68,7 +68,11 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         }
       }
       return (
-        <G key={Math.random()}>
+        <G
+          key={Math.random()}
+          // @ts-expect-error
+          width={this.props.width}
+        >
           <Path
             d={c.sector.path.print()}
             fill={c.item.color}
@@ -142,8 +146,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
               Number(this.props.paddingLeft ? this.props.paddingLeft : 0)
             }
             y={this.props.height / 2}
-            // @ts-expect-error
-            width={this.props.width}
           >
             {slices}
           </G>
