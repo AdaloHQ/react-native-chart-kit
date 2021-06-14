@@ -107,7 +107,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
               }
               // @ts-expect-error
               width={this.props.width / 2.5}
-              style={{ width: this.props.width / 2.5 }}
             >
               {`${value} ${c.item.name}`}
             </Text>
@@ -146,6 +145,8 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
               Number(this.props.paddingLeft ? this.props.paddingLeft : 0)
             }
             y={this.props.height / 2}
+            // @ts-expect-error
+            width={this.props.width}
           >
             {slices}
           </G>
