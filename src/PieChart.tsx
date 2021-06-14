@@ -67,7 +67,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
           }
         }
       }
-      console.log(c.item);
       return (
         <G key={Math.random()}>
           <Path
