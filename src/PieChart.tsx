@@ -1,7 +1,7 @@
 import Pie from "paths-js/pie";
 import React from "react";
 import { View, ViewStyle } from "react-native";
-import { G, Path, Rect, Svg, Text } from "react-native-svg";
+import { G, Path, Rect, Svg, Text, TSpan } from "react-native-svg";
 
 import AbstractChart, { AbstractChartProps } from "./AbstractChart";
 
@@ -110,7 +110,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
               // @ts-expect-error
               width={this.props.width / 2.5}
             >
-              {`${value} ${c.item.name}`}
+              <TSpan x={0} inlineSize={100}>{`${value} ${c.item.name}`}</TSpan>
             </Text>
           ) : null}
         </G>
