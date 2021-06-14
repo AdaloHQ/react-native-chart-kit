@@ -1,7 +1,7 @@
 import Pie from "paths-js/pie";
 import React from "react";
 import { View, ViewStyle } from "react-native";
-import { G, Path, Rect, Svg, Text, TSpan } from "react-native-svg";
+import { G, Path, Rect, Svg, Text } from "react-native-svg";
 
 import AbstractChart, { AbstractChartProps } from "./AbstractChart";
 
@@ -94,36 +94,23 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
             />
           ) : null}
           {hasLegend ? (
-            <Rect
-              width={this.props.width / 2.5}
-              height={c.item.legendFontSize}
+            <Text
+              fill={c.item.legendFontColor}
+              fontSize={c.item.legendFontSize}
+              fontFamily={c.item.legendFontFamily}
+              fontWeight={c.item.legendFontWeight}
               x={this.props.width / 2.5}
               y={
                 -(this.props.height / 2.5) +
                 ((this.props.height * 0.8) / this.props.data.length) * i +
                 12 * 2
               }
+              inlineSize={100}
+              // @ts-expect-error
+              width={this.props.width / 2.5}
             >
-              <Text
-                fill={c.item.legendFontColor}
-                fontSize={c.item.legendFontSize}
-                fontFamily={c.item.legendFontFamily}
-                fontWeight={c.item.legendFontWeight}
-                x={this.props.width / 2.5}
-                y={
-                  -(this.props.height / 2.5) +
-                  ((this.props.height * 0.8) / this.props.data.length) * i +
-                  12 * 2
-                }
-                // @ts-expect-error
-                width={this.props.width / 2.5}
-                inlineSize={this.props.width / 2.5}
-              >
-                <TSpan inlineSize={this.props.width / 2.5}>
-                  {`${value} ${c.item.name}`}
-                </TSpan>
-              </Text>
-            </Rect>
+              {`${value} ${c.item.name}`}
+            </Text>
           ) : null}
         </G>
       );
