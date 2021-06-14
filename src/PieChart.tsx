@@ -90,22 +90,27 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
             />
           ) : null}
           {hasLegend ? (
-            <Text
-              fill={c.item.legendFontColor}
-              fontSize={c.item.legendFontSize}
-              fontFamily={c.item.legendFontFamily}
-              fontWeight={c.item.legendFontWeight}
-              x={this.props.width / 2.5}
-              y={
-                -(this.props.height / 2.5) +
-                ((this.props.height * 0.8) / this.props.data.length) * i +
-                12 * 2
-              }
+            <View
               // @ts-expect-error
               width={this.props.width / 2.5}
             >
-              {`${value} ${c.item.name}`}
-            </Text>
+              <Text
+                fill={c.item.legendFontColor}
+                fontSize={c.item.legendFontSize}
+                fontFamily={c.item.legendFontFamily}
+                fontWeight={c.item.legendFontWeight}
+                x={this.props.width / 2.5}
+                y={
+                  -(this.props.height / 2.5) +
+                  ((this.props.height * 0.8) / this.props.data.length) * i +
+                  12 * 2
+                }
+                // @ts-expect-error
+                width={this.props.width / 2.5}
+              >
+                {`${value} ${c.item.name}`}
+              </Text>
+            </View>
           ) : null}
         </G>
       );
