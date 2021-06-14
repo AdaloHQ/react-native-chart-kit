@@ -102,6 +102,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
                 12 * 2
               }
               // @ts-expect-error
+              numberOfLines={3}
               width={this.props.width / 2.5}
               style={{ width: this.props.width / 2.5 }}
             >
