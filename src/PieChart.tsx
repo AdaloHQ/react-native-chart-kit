@@ -110,7 +110,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
               // @ts-expect-error
               width={this.props.width / 2.5}
             >
-              <TSpan x={0} inlineSize={100}>{`${value} ${c.item.name}`}</TSpan>
+              <TSpan inlineSize={100}>{`${value} ${c.item.name}`}</TSpan>
             </Text>
           ) : null}
         </G>
