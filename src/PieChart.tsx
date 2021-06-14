@@ -103,8 +103,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
               }
               // @ts-expect-error
               width={this.props.width / 2.5}
-              flex={1}
-              flexWrap={"wrap"}
+              style={{ width: this.props.width / 2.5 }}
             >
               {`${value} ${c.item.name}`}
             </Text>
