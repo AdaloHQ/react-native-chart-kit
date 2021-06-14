@@ -96,14 +96,14 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
               fontSize={c.item.legendFontSize}
               fontFamily={c.item.legendFontFamily}
               fontWeight={c.item.legendFontWeight}
-              // x={this.props.width / 2.5}
-              // y={
-              //   -(this.props.height / 2.5) +
-              //   ((this.props.height * 0.8) / this.props.data.length) * i +
-              //   12 * 2
-              // }
+              x={this.props.width / 2.5}
+              y={
+                -(this.props.height / 2.5) +
+                ((this.props.height * 0.8) / this.props.data.length) * i +
+                12 * 2
+              }
               // textAnchor={"start"}
-              width={100}
+              width={this.props.width - this.props.width / 2.5}
             >
               {`${value} ${c.item.name}`}
             </Text>
