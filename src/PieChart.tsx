@@ -34,7 +34,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
 
     const { borderRadius = 0 } = style;
 
-    const chart = Pie({
+    let chart = Pie({
       center: this.props.center || [0, 0],
       r: 0,
       R: this.props.height / 2.5,
@@ -48,20 +48,48 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       return sum + item[this.props.accessor];
     }, 0);
 
+    const divisor = total / 100.0;
+    let wholeTotal = 0;
+    chart.curves.forEach((c, i) => {
+      const percentage = c.item[this.props.accessor] / divisor;
+      const pieces = percentage.toString().split(".");
+      const whole = parseInt(pieces[0]);
+      const decimal = parseFloat("." + pieces[1]);
+      wholeTotal += whole;
+      c.item[this.props.accessor] = {
+        index: i,
+        whole,
+        decimal
+      };
+    });
+
+    const hamiltonDiff = 100 - wholeTotal;
+    const sortedCurves = [...chart.curves].sort((a, b) =>
+      a.item[this.props.accessor].decimal < b.item[this.props.accessor].decimal
+        ? 1
+        : -1
+    );
+    let uppedIndices = [];
+    for (let i = 0; i < hamiltonDiff; i++) {
+      uppedIndices.push(sortedCurves[i].item[this.props.accessor].index);
+    }
+
     const slices = chart.curves.map((c, i) => {
       let value: string;
 
       if (absolute) {
         value = c.item[this.props.accessor];
       } else {
+        //TODO: calculate percentage using Hamilton's method
         if (total === 0) {
           value = 0 + "%";
         } else {
-          const percentage = Math.round(
-            (100 / total) * c.item[this.props.accessor]
-          );
-          value = Math.round((100 / total) * c.item[this.props.accessor]) + "%";
-          if (avoidFalseZero && percentage === 0) {
+          const item = c.item[this.props.accessor];
+          let percentage = item.whole;
+          if (uppedIndices.includes(item.index)) {
+            percentage += 1;
+          }
+          if (avoidFalseZero && item.whole === 0 && item.decimal !== 0) {
             value = "<1%";
           } else {
             value = percentage + "%";
