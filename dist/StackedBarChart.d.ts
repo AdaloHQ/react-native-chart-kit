@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { ViewStyle } from "react-native";
 import AbstractChart, {
   AbstractChartConfig,
@@ -70,20 +69,17 @@ declare class StackedBarChart extends AbstractChart<
   }: Pick<
     Pick<
       AbstractChartConfig,
-      | "color"
-      | "style"
-      | "backgroundColor"
-      | "height"
-      | "paddingRight"
-      | "paddingTop"
-      | "width"
-      | "strokeWidth"
       | "propsForBackgroundLines"
       | "propsForLabels"
+      | "color"
       | "labelColor"
       | "propsForVerticalLabels"
       | "propsForHorizontalLabels"
       | "count"
+      | "width"
+      | "height"
+      | "paddingTop"
+      | "paddingRight"
       | "horizontalLabelRotation"
       | "formatYLabel"
       | "labels"
@@ -92,6 +88,7 @@ declare class StackedBarChart extends AbstractChart<
       | "verticalLabelRotation"
       | "formatXLabel"
       | "verticalLabelsHeightPercentage"
+      | "backgroundColor"
       | "backgroundGradientFrom"
       | "backgroundGradientFromOpacity"
       | "backgroundGradientTo"
@@ -99,10 +96,12 @@ declare class StackedBarChart extends AbstractChart<
       | "fillShadowGradient"
       | "fillShadowGradientOpacity"
       | "useShadowColorFromDataset"
+      | "strokeWidth"
       | "barPercentage"
       | "barRadius"
       | "propsForDots"
       | "decimalPlaces"
+      | "style"
       | "linejoinType"
       | "scrollableDotFill"
       | "scrollableDotStrokeColor"
@@ -114,10 +113,10 @@ declare class StackedBarChart extends AbstractChart<
       | "scrollableInfoOffset"
       | "scrollableInfoSize"
     >,
-    | "height"
-    | "paddingRight"
-    | "paddingTop"
     | "width"
+    | "height"
+    | "paddingTop"
+    | "paddingRight"
     | "stackedBar"
     | "verticalLabelsHeightPercentage"
   > & {
@@ -130,7 +129,7 @@ declare class StackedBarChart extends AbstractChart<
     colors,
     width,
     height
-  }: Pick<AbstractChartConfig, "height" | "width"> & {
+  }: Pick<AbstractChartConfig, "width" | "height"> & {
     legend: string[];
     colors: string[];
   }) => JSX.Element[];

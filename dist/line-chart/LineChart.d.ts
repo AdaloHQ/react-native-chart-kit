@@ -211,7 +211,7 @@ declare class LineChart extends AbstractChart<LineChartProps, LineChartState> {
     onDataPointClick
   }: Pick<
     AbstractChartConfig,
-    "height" | "paddingRight" | "paddingTop" | "width" | "data"
+    "data" | "width" | "height" | "paddingTop" | "paddingRight"
   > & {
     onDataPointClick: LineChartProps["onDataPointClick"];
   }) => React.ReactNode[];
@@ -244,7 +244,7 @@ declare class LineChart extends AbstractChart<LineChartProps, LineChartState> {
     useColorFromDataset
   }: Pick<
     AbstractChartConfig,
-    "height" | "paddingRight" | "paddingTop" | "width" | "data"
+    "data" | "width" | "height" | "paddingTop" | "paddingRight"
   > & {
     useColorFromDataset: AbstractChartConfig["useShadowColorFromDataset"];
   }) => JSX.Element[];
@@ -291,7 +291,7 @@ declare class LineChart extends AbstractChart<LineChartProps, LineChartState> {
     useColorFromDataset
   }: Pick<
     AbstractChartConfig,
-    "height" | "paddingRight" | "paddingTop" | "width" | "data"
+    "data" | "width" | "height" | "paddingTop" | "paddingRight"
   > & {
     useColorFromDataset: AbstractChartConfig["useShadowColorFromDataset"];
   }) => JSX.Element[];
