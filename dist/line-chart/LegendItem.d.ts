@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { Color, TextProps } from "react-native-svg";
 export declare type LegendItemProps = {
   baseLegendItemX: number;

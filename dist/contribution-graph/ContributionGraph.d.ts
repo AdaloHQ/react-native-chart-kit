@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { RectProps } from "react-native-svg";
 import AbstractChart from "../AbstractChart";
 import { ContributionGraphProps, ContributionGraphState } from ".";

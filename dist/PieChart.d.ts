@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { ViewStyle } from "react-native";
 import AbstractChart, { AbstractChartProps } from "./AbstractChart";
 export interface PieChartProps extends AbstractChartProps {

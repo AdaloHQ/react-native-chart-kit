@@ -67,8 +67,8 @@ declare class AbstractChart<
     strokeOpacity?: string | number;
     strokeDasharray?: string | number | readonly (string | number)[];
     strokeDashoffset?: string | number;
-    strokeLinecap?: "round" | "butt" | "square";
-    strokeLinejoin?: "round" | "bevel" | "miter";
+    strokeLinecap?: import("react-native-svg").Linecap;
+    strokeLinejoin?: "miter" | "bevel" | "round";
     strokeMiterlimit?: string | number;
     clipRule?: import("react-native-svg").FillRule;
     clipPath?: string;
@@ -90,13 +90,13 @@ declare class AbstractChart<
     skewY?: string | number;
     rotation?: string | number;
     vectorEffect?:
-      | "default"
-      | "inherit"
       | "none"
       | "non-scaling-stroke"
       | "nonScalingStroke"
+      | "default"
+      | "inherit"
       | "uri";
-    pointerEvents?: "auto" | "none" | "box-none" | "box-only";
+    pointerEvents?: "none" | "box-none" | "box-only" | "auto";
     onStartShouldSetResponder?: (
       event: import("react-native").GestureResponderEvent
     ) => boolean;
@@ -187,8 +187,8 @@ declare class AbstractChart<
     strokeOpacity?: string | number;
     strokeDasharray?: string | number | readonly (string | number)[];
     strokeDashoffset?: string | number;
-    strokeLinecap?: "round" | "butt" | "square";
-    strokeLinejoin?: "round" | "bevel" | "miter";
+    strokeLinecap?: import("react-native-svg").Linecap;
+    strokeLinejoin?: "miter" | "bevel" | "round";
     strokeMiterlimit?: string | number;
     clipRule?: import("react-native-svg").FillRule;
     clipPath?: string;
@@ -210,13 +210,13 @@ declare class AbstractChart<
     skewY?: string | number;
     rotation?: string | number;
     vectorEffect?:
-      | "default"
-      | "inherit"
       | "none"
       | "non-scaling-stroke"
       | "nonScalingStroke"
+      | "default"
+      | "inherit"
       | "uri";
-    pointerEvents?: "auto" | "none" | "box-none" | "box-only";
+    pointerEvents?: "none" | "box-none" | "box-only" | "auto";
     onStartShouldSetResponder?: (
       event: import("react-native").GestureResponderEvent
     ) => boolean;
@@ -307,8 +307,8 @@ declare class AbstractChart<
     strokeOpacity?: string | number;
     strokeDasharray?: string | number | readonly (string | number)[];
     strokeDashoffset?: string | number;
-    strokeLinecap?: "round" | "butt" | "square";
-    strokeLinejoin?: "round" | "bevel" | "miter";
+    strokeLinecap?: import("react-native-svg").Linecap;
+    strokeLinejoin?: "miter" | "bevel" | "round";
     strokeMiterlimit?: string | number;
     clipRule?: import("react-native-svg").FillRule;
     clipPath?: string;
@@ -330,13 +330,13 @@ declare class AbstractChart<
     skewY?: string | number;
     rotation?: string | number;
     vectorEffect?:
-      | "default"
-      | "inherit"
       | "none"
       | "non-scaling-stroke"
       | "nonScalingStroke"
+      | "default"
+      | "inherit"
       | "uri";
-    pointerEvents?: "auto" | "none" | "box-none" | "box-only";
+    pointerEvents?: "none" | "box-none" | "box-only" | "auto";
     onStartShouldSetResponder?: (
       event: import("react-native").GestureResponderEvent
     ) => boolean;
@@ -407,20 +407,17 @@ declare class AbstractChart<
   renderHorizontalLabels: (
     config: Pick<
       AbstractChartConfig,
-      | "color"
-      | "style"
-      | "backgroundColor"
-      | "height"
-      | "paddingRight"
-      | "paddingTop"
-      | "width"
-      | "strokeWidth"
       | "propsForBackgroundLines"
       | "propsForLabels"
+      | "color"
       | "labelColor"
       | "propsForVerticalLabels"
       | "propsForHorizontalLabels"
       | "count"
+      | "width"
+      | "height"
+      | "paddingTop"
+      | "paddingRight"
       | "horizontalLabelRotation"
       | "formatYLabel"
       | "labels"
@@ -429,6 +426,7 @@ declare class AbstractChart<
       | "verticalLabelRotation"
       | "formatXLabel"
       | "verticalLabelsHeightPercentage"
+      | "backgroundColor"
       | "backgroundGradientFrom"
       | "backgroundGradientFromOpacity"
       | "backgroundGradientTo"
@@ -436,10 +434,12 @@ declare class AbstractChart<
       | "fillShadowGradient"
       | "fillShadowGradientOpacity"
       | "useShadowColorFromDataset"
+      | "strokeWidth"
       | "barPercentage"
       | "barRadius"
       | "propsForDots"
       | "decimalPlaces"
+      | "style"
       | "linejoinType"
       | "scrollableDotFill"
       | "scrollableDotStrokeColor"
@@ -488,17 +488,17 @@ declare class AbstractChart<
   }: Pick<
     Pick<
       AbstractChartConfig,
-      | "height"
-      | "paddingRight"
-      | "paddingTop"
-      | "width"
       | "data"
+      | "width"
+      | "height"
+      | "paddingTop"
+      | "paddingRight"
       | "verticalLabelsHeightPercentage"
     >,
-    | "height"
-    | "paddingRight"
-    | "paddingTop"
     | "width"
+    | "height"
+    | "paddingTop"
+    | "paddingRight"
     | "verticalLabelsHeightPercentage"
   > & {
     data: number[];

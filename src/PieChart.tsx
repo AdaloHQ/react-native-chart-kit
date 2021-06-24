@@ -48,30 +48,34 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       return sum + item[this.props.accessor];
     }, 0);
 
-    const divisor = total / 100.0;
-    let wholeTotal = 0;
-    chart.curves.forEach((c, i) => {
-      const percentage = c.item[this.props.accessor] / divisor;
-      const pieces = percentage.toString().split(".");
-      const whole = parseInt(pieces[0]);
-      const decimal = parseFloat("." + pieces[1]);
-      wholeTotal += whole;
-      c.item[this.props.accessor] = {
-        index: i,
-        whole,
-        decimal
-      };
-    });
-
-    const hamiltonDiff = 100 - wholeTotal;
-    const sortedCurves = [...chart.curves].sort((a, b) =>
-      a.item[this.props.accessor].decimal < b.item[this.props.accessor].decimal
-        ? 1
-        : -1
-    );
     let uppedIndices = [];
-    for (let i = 0; i < hamiltonDiff; i++) {
-      uppedIndices.push(sortedCurves[i].item[this.props.accessor].index);
+
+    if (!absolute) {
+      const divisor = total / 100.0;
+      let wholeTotal = 0;
+      chart.curves.forEach((c, i) => {
+        const percentage = c.item[this.props.accessor] / divisor;
+        const pieces = percentage.toString().split(".");
+        const whole = parseInt(pieces[0]);
+        const decimal = parseFloat("." + pieces[1]);
+        wholeTotal += whole;
+        c.item[this.props.accessor] = {
+          index: i,
+          whole,
+          decimal
+        };
+      });
+
+      const hamiltonDiff = 100 - wholeTotal;
+      const sortedCurves = [...chart.curves].sort((a, b) =>
+        a.item[this.props.accessor].decimal <
+        b.item[this.props.accessor].decimal
+          ? 1
+          : -1
+      );
+      for (let i = 0; i < hamiltonDiff; i++) {
+        uppedIndices.push(sortedCurves[i].item[this.props.accessor].index);
+      }
     }
 
     const slices = chart.curves.map((c, i) => {
