@@ -38,7 +38,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
     let chartWidthPercentage = this.props.chartWidthPercentage * 0.01;
 
     let radius: number;
-    // let height = this.props.height
 
     if (
       this.props.height / 2.5 <
@@ -46,14 +45,8 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
     ) {
       console.log("1");
       radius = this.props.height / 2.5;
-      // if (radius > this.props.width / 2 / 2) {
-      //   // console.log('2')
-      //   height = this.props.width / 1.62
-      //   radius = height / 2.5
-      // }
       chartWidthPercentage = 2 * (radius / this.props.width);
     } else {
-      console.log("3");
       radius = this.props.width * (chartWidthPercentage / 2);
     }
 
@@ -62,13 +55,9 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
     }
 
     let chart = Pie({
-      //TODO: mess with this and move legend to adjust ration
-      //TODO: adjust radius based on available width, pick smallest between width and height
-      //this.props.height/2.5 vs this.props.width / denom / 2
       center: this.props.center || [0, 0],
       r: 0,
       R: radius,
-      // R: this.props.width / 4 / 2,
       data: this.props.data,
       accessor: x => {
         return x[this.props.accessor];
@@ -145,7 +134,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
               fill={c.item.color}
               rx={8}
               ry={8}
-              //TODO: replace with denominator
               x={
                 this.props.width / (100 / (chartWidthPercentage * 100) + 0.5) -
                 24
@@ -163,15 +151,13 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
               fontSize={c.item.legendFontSize}
               fontFamily={c.item.legendFontFamily}
               fontWeight={c.item.legendFontWeight}
-              //TODO: replace with denominator
               x={this.props.width / (100 / (chartWidthPercentage * 100) + 0.5)}
-              // x={0}
               y={
                 -(this.props.height / 2.5) +
                 ((this.props.height * 0.8) / this.props.data.length) * i +
                 12 * 2
               }
-              // textAnchor={"start"}
+              //uncomment to wrap text (poor implementation)
               // width={this.props.width / 2.5 - 16}
             >
               {`${value} ${c.item.name}`}
@@ -206,12 +192,10 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
             fill={backgroundColor}
           />
           <G
-            //TODO: replace with denominator * 2 (or denom / 2) ?
             x={
               (this.props.width * chartWidthPercentage) / 2 +
               Number(this.props.paddingLeft ? this.props.paddingLeft : 0)
             }
-            // x = { 0 }
             y={this.props.height / 2}
             // @ts-expect-error
             width={this.props.width}
