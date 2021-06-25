@@ -43,7 +43,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       this.props.height / 2.5 <
       (this.props.width * chartWidthPercentage) / 2
     ) {
-      console.log("1");
       radius = this.props.height / 2.5;
       chartWidthPercentage = 2 * (radius / this.props.width);
     } else {
@@ -77,7 +76,10 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         const percentage = c.item[this.props.accessor] / divisor;
         const pieces = percentage.toString().split(".");
         const whole = parseInt(pieces[0]);
-        const decimal = parseFloat("." + pieces[1]);
+        let decimal = parseFloat("." + pieces[1]);
+        if (isNaN(decimal)) {
+          decimal = 0;
+        }
         wholeTotal += whole;
         c.item[this.props.accessor] = {
           index: i,
