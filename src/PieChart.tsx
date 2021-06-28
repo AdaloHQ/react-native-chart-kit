@@ -128,6 +128,8 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
             d={c.sector.path.print()}
             fill={c.item.color}
             onPress={c.item.action}
+            //@ts-ignore
+            onClick={c.item.action}
           />
           {hasLegend ? (
             <Rect
