@@ -1,5 +1,5 @@
 {
-  "name": "react-native-chart-kit",
+  "name": "@adalo/react-native-chart-kit",
   "version": "6.11.0",
   "devDependencies": {
     "@types/react": "^16.9.38",
@@ -63,9 +63,9 @@
     }
   },
   "license": "MIT",
-  "homepage": "https://github.com/indiespirit/react-native-chart-kit",
+  "homepage": "https://github.com/AdaloHQ/react-native-chart-kit",
   "repository": {
     "type": "git",
-    "url": "https://github.com/indiespirit/react-native-chart-kit"
+    "url": "https://github.com/AdaloHQ/react-native-chart-kit"
   }
 }
