@@ -6,6 +6,7 @@
     "@types/react-native": "^0.62.13",
     "babel-eslint": "10.x",
     "babel-plugin-module-resolver": "^3.1.1",
+    "babel-plugin-rename-jsx-attribute": "^0.2.4",
     "babel-polyfill": "^6.26.0",
     "eslint": "6.x",
     "eslint-config-react-app": "^5.0.2",
