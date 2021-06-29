@@ -1,17 +1,3 @@
-// {
-//   "presets": ["babel-preset-expo"]
-// }
 {
-  "presets": ["react"],
-  "plugins": [
-    [
-      "rename-jsx-attribute",
-      {
-        "attributes": {
-          "onPress": "onClick"
-        }
-      }
-    ]
-  ]
+  "presets": ["babel-preset-expo"]
 }
-
