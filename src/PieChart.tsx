@@ -34,16 +34,21 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       this.props.chartWidthPercentage !== prevProps.chartWidthPercentage ||
       this.props.data != prevProps.data
     ) {
+      console.log("update");
+      console.log(this.props);
+      console.log(prevProps);
+      console.log(this.state);
       let calculating = [];
       for (let i = 0; i < this.props.data.length; i++) {
         calculating[i] = { label: this.props.data[i], calculating: true };
       }
-
+      console.log("set state1", calculating);
       this.setState({
         calculating,
         ...this.props
       });
     }
+    console.log("updated state", this.state.calculating);
   }
 
   constructor(props) {
@@ -68,25 +73,34 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       avoidFalseZero = false
     } = this.props;
 
-    const onLayout = (e, index, fontSize) => {
+    const onLayout = (e, index, fontSize, label) => {
+      console.log("index", index, "label", label);
       let width = e.nativeEvent.layout.width;
       let target =
         this.props.width - this.props.width * chartWidthPercentage - 84;
       let calculating = this.state.calculating;
 
-      console.log("width", width, "target", target);
       if (width < target) {
         calculating[index].calculating = false;
+        console.log(
+          "set state 2",
+          calculating,
+          index,
+          calculating[index].calculating
+        );
         this.setState({
           calculating,
           ...this.state
         });
       } else {
-        let label = calculating[index].label.name;
         if (label.slice(-3) === "...") {
           label = label.slice(0, -3);
         }
-        target = target - fontSize.split("p")[0] * 2;
+        if (isNaN(fontSize)) {
+          target = target - fontSize.split("p")[0] * 2;
+        } else {
+          target = target - fontSize * 2;
+        }
         const numberOfCharacters = label.length;
         const ratio = target / width;
         const targetCharacters = Math.floor(ratio * numberOfCharacters);
@@ -95,6 +109,8 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         if (label === "...") {
           calculating[index].calculating = false;
         }
+        console.log("width", width, "target", target, "label", label);
+        console.log("set state 3", calculating);
         this.setState({
           calculating,
           ...this.state
@@ -110,14 +126,15 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         legendFontWeight,
         value
       } = item.label;
+      console.log("calc index", index);
       if (item.calculating && this.props.hasLegend) {
-        console.log("value", value);
+        console.log(item);
         if (!isObject(value)) {
           return (
             <View
               key={index}
               style={{ alignSelf: "flex-start", position: "absolute" }}
-              onLayout={e => onLayout(e, index, legendFontSize)}
+              onLayout={e => onLayout(e, index, legendFontSize, name)}
             >
               <NativeText
                 style={{
@@ -134,7 +151,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
             <View
               key={index}
               style={{ alignSelf: "flex-start", position: "absolute" }}
-              onLayout={e => onLayout(e, index, legendFontSize)}
+              onLayout={e => onLayout(e, index, legendFontSize, name)}
             >
               <NativeText
                 style={{
@@ -246,6 +263,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
           }
         }
       }
+      console.log("label name", this.state.calculating[c.index].label.name);
       return (
         <G key={Math.random()}>
           <Path
