@@ -14,8 +14,13 @@ export interface PieChartProps extends AbstractChartProps {
   avoidFalseZero?: boolean;
   chartWidthPercentage: number;
 }
-declare type PieChartState = {};
+declare type PieChartState = {
+  data: Array<any>;
+  calculating: Array<any>;
+};
 declare class PieChart extends AbstractChart<PieChartProps, PieChartState> {
+  componentDidUpdate(prevProps: any): void;
+  constructor(props: any);
   render(): JSX.Element;
 }
 export default PieChart;

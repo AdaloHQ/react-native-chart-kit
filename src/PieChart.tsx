@@ -1,9 +1,10 @@
 import Pie from "paths-js/pie";
-import React from "react";
-import { View, ViewStyle } from "react-native";
+import React, { Fragment } from "react";
+import { View, ViewStyle, Text as NativeText } from "react-native";
 import { G, Path, Rect, Svg, Text } from "react-native-svg";
 
 import AbstractChart, { AbstractChartProps } from "./AbstractChart";
+// import TextWidthFinder from "./TextWidthFinder";
 
 export interface PieChartProps extends AbstractChartProps {
   data: Array<any>;
@@ -20,9 +21,43 @@ export interface PieChartProps extends AbstractChartProps {
   chartWidthPercentage: number;
 }
 
-type PieChartState = {};
+type PieChartState = {
+  data: Array<any>;
+  calculating: Array<any>;
+};
 
 class PieChart extends AbstractChart<PieChartProps, PieChartState> {
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.width !== prevProps.width ||
+      this.props.chartWidthPercentage !== prevProps.chartWidthPercentage ||
+      this.props.data != prevProps.data
+    ) {
+      let calculating = [];
+      for (let i = 0; i < this.props.data.length; i++) {
+        calculating[i] = { label: this.props.data[i], calculating: true };
+      }
+
+      this.setState({
+        calculating,
+        ...this.props
+      });
+    }
+  }
+
+  constructor(props) {
+    super(props);
+    let calculating = [];
+    for (let i = 0; i < this.props.data.length; i++) {
+      calculating[i] = { label: this.props.data[i], calculating: true };
+    }
+
+    this.state = {
+      calculating,
+      ...props
+    };
+  }
+
   render() {
     const {
       style = {},
@@ -31,6 +66,69 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       hasLegend = true,
       avoidFalseZero = false
     } = this.props;
+
+    const onLayout = (e, index, fontSize) => {
+      let width = e.nativeEvent.layout.width;
+      let target =
+        this.props.width - this.props.width * chartWidthPercentage - 84;
+      let calculating = this.state.calculating;
+
+      console.log("width", width);
+
+      if (width < target) {
+        calculating[index].calculating = false;
+        this.setState({
+          calculating,
+          ...this.state
+        });
+      } else {
+        let label = calculating[index].label.name;
+        if (label.slice(-3) === "...") {
+          label = label.slice(0, -3);
+        }
+        target = target - fontSize.split("p")[0] * 2;
+        const numberOfCharacters = label.length;
+        const ratio = target / width;
+        const targetCharacters = Math.floor(ratio * numberOfCharacters);
+        label = `${label.slice(0, targetCharacters)}...`;
+        calculating[index].label.name = label;
+        if (label === "...") {
+          calculating[index].calculating = false;
+        }
+        this.setState({
+          calculating,
+          ...this.state
+        });
+      }
+    };
+
+    const calculations = this.state.calculating.map((item, index) => {
+      let {
+        name,
+        legendFontFamily,
+        legendFontSize,
+        legendFontWeight,
+        value
+      } = item.label;
+      if (item.calculating && this.props.hasLegend) {
+        return (
+          <View
+            key={index}
+            style={{ alignSelf: "flex-start", position: "absolute" }}
+            onLayout={e => onLayout(e, index, legendFontSize)}
+          >
+            <NativeText
+              style={{
+                fontFamily: legendFontFamily,
+                fontSize: legendFontSize,
+                fontWeight: legendFontWeight,
+                color: "transparent"
+              }}
+            >{`${value} ${name}`}</NativeText>
+          </View>
+        );
+      }
+    });
 
     const { borderRadius = 0 } = style;
 
@@ -56,7 +154,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       center: this.props.center || [0, 0],
       r: 0,
       R: radius,
-      data: this.props.data,
+      data: this.state.data,
       accessor: x => {
         return x[this.props.accessor];
       }
@@ -132,8 +230,8 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
           />
           {hasLegend ? (
             <Rect
-              width={c.item.legendFontSize}
-              height={c.item.legendFontSize}
+              width={16}
+              height={16}
               fill={c.item.color}
               rx={8}
               ry={8}
@@ -160,10 +258,10 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
                 ((this.props.height * 0.8) / this.props.data.length) * i +
                 12 * 2
               }
-              //uncomment to wrap text (poor implementation)
-              // width={this.props.width / 2.5 - 16}
             >
-              {`${value} ${c.item.name}`}
+              {`${this.state.calculating[c.index].label.value} ${
+                this.state.calculating[c.index].label.name
+              }`}
             </Text>
           ) : null}
         </G>
@@ -179,7 +277,11 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
           ...style
         }}
       >
-        <Svg width={this.props.width} height={this.props.height}>
+        <Svg
+          width={this.props.width}
+          height={this.props.height}
+          style={{ paddingRight: 16 }}
+        >
           <G>
             {this.renderDefs({
               width: this.props.height,
@@ -206,6 +308,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
             {slices}
           </G>
         </Svg>
+        {calculations}
       </View>
     );
   }
