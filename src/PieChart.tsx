@@ -1,3 +1,4 @@
+import { isObject } from "lodash";
 import Pie from "paths-js/pie";
 import React, { Fragment } from "react";
 import { View, ViewStyle, Text as NativeText } from "react-native";
@@ -73,6 +74,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         this.props.width - this.props.width * chartWidthPercentage - 84;
       let calculating = this.state.calculating;
 
+      console.log("width", width, "target", target);
       if (width < target) {
         calculating[index].calculating = false;
         this.setState({
@@ -109,22 +111,45 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         value
       } = item.label;
       if (item.calculating && this.props.hasLegend) {
-        return (
-          <View
-            key={index}
-            style={{ alignSelf: "flex-start", position: "absolute" }}
-            onLayout={e => onLayout(e, index, legendFontSize)}
-          >
-            <NativeText
-              style={{
-                fontFamily: legendFontFamily,
-                fontSize: legendFontSize,
-                fontWeight: legendFontWeight,
-                color: "transparent"
-              }}
-            >{`${value} ${name}`}</NativeText>
-          </View>
-        );
+        console.log("value", value);
+        if (!isObject(value)) {
+          return (
+            <View
+              key={index}
+              style={{ alignSelf: "flex-start", position: "absolute" }}
+              onLayout={e => onLayout(e, index, legendFontSize)}
+            >
+              <NativeText
+                style={{
+                  fontFamily: legendFontFamily,
+                  fontSize: legendFontSize,
+                  fontWeight: legendFontWeight,
+                  color: "transparent"
+                }}
+              >{`${value} ${name}`}</NativeText>
+            </View>
+          );
+        } else {
+          return (
+            <View
+              key={index}
+              style={{ alignSelf: "flex-start", position: "absolute" }}
+              onLayout={e => onLayout(e, index, legendFontSize)}
+            >
+              <NativeText
+                style={{
+                  fontFamily: legendFontFamily,
+                  fontSize: legendFontSize,
+                  fontWeight: legendFontWeight,
+                  color: "transparent"
+                }}
+              >
+                {//@ts-ignore
+                `${value.whole}% ${name}`}
+              </NativeText>
+            </View>
+          );
+        }
       }
     });
 
@@ -168,19 +193,23 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       const divisor = total / 100.0;
       let wholeTotal = 0;
       chart.curves.forEach((c, i) => {
-        const percentage = c.item[this.props.accessor] / divisor;
-        const pieces = percentage.toString().split(".");
-        const whole = parseInt(pieces[0]);
-        let decimal = parseFloat("." + pieces[1]);
-        if (isNaN(decimal)) {
-          decimal = 0;
+        if (!isObject(c.item[this.props.accessor])) {
+          const percentage = c.item[this.props.accessor] / divisor;
+          const pieces = percentage.toString().split(".");
+          const whole = parseInt(pieces[0]);
+          let decimal = parseFloat("." + pieces[1]);
+          if (isNaN(decimal)) {
+            decimal = 0;
+          }
+          wholeTotal += whole;
+          c.item[this.props.accessor] = {
+            index: i,
+            whole,
+            decimal
+          };
+        } else {
+          wholeTotal += c.item[this.props.accessor].whole;
         }
-        wholeTotal += whole;
-        c.item[this.props.accessor] = {
-          index: i,
-          whole,
-          decimal
-        };
       });
 
       const hamiltonDiff = 100 - wholeTotal;
@@ -257,9 +286,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
                 12 * 2
               }
             >
-              {`${this.state.calculating[c.index].label.value} ${
-                this.state.calculating[c.index].label.name
-              }`}
+              {`${value} ${this.state.calculating[c.index].label.name}`}
             </Text>
           ) : null}
         </G>
