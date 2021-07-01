@@ -73,8 +73,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         this.props.width - this.props.width * chartWidthPercentage - 84;
       let calculating = this.state.calculating;
 
-      console.log("width", width);
-
       if (width < target) {
         calculating[index].calculating = false;
         this.setState({
