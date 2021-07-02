@@ -34,21 +34,15 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       this.props.chartWidthPercentage !== prevProps.chartWidthPercentage ||
       this.props.data != prevProps.data
     ) {
-      console.log("update");
-      console.log(this.props);
-      console.log(prevProps);
-      console.log(this.state);
       let calculating = [];
       for (let i = 0; i < this.props.data.length; i++) {
         calculating[i] = { label: this.props.data[i], calculating: true };
       }
-      console.log("set state1", calculating);
       this.setState({
         calculating,
         ...this.props
       });
     }
-    console.log("updated state", this.state.calculating);
   }
 
   constructor(props) {
@@ -60,7 +54,8 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
 
     this.state = {
       calculating,
-      ...props
+      ...props,
+      labelData: this.props.data
     };
   }
 
@@ -74,7 +69,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
     } = this.props;
 
     const onLayout = (e, index, fontSize, label) => {
-      console.log("index", index, "label", label);
       let width = e.nativeEvent.layout.width;
       let target =
         this.props.width - this.props.width * chartWidthPercentage - 84;
@@ -82,12 +76,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
 
       if (width < target) {
         calculating[index].calculating = false;
-        console.log(
-          "set state 2",
-          calculating,
-          index,
-          calculating[index].calculating
-        );
         this.setState({
           calculating,
           ...this.state
@@ -109,8 +97,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         if (label === "...") {
           calculating[index].calculating = false;
         }
-        console.log("width", width, "target", target, "label", label);
-        console.log("set state 3", calculating);
         this.setState({
           calculating,
           ...this.state
@@ -126,9 +112,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         legendFontWeight,
         value
       } = item.label;
-      console.log("calc index", index);
       if (item.calculating && this.props.hasLegend) {
-        console.log(item);
         if (!isObject(value)) {
           return (
             <View
@@ -201,7 +185,11 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
     });
 
     const total = this.props.data.reduce((sum, item) => {
-      return sum + item[this.props.accessor];
+      if (isObject(item[this.props.accessor])) {
+        return sum + item[this.props.accessor].whole;
+      } else {
+        return sum + item[this.props.accessor];
+      }
     }, 0);
 
     let uppedIndices = [];
@@ -210,34 +198,33 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       const divisor = total / 100.0;
       let wholeTotal = 0;
       chart.curves.forEach((c, i) => {
-        if (!isObject(c.item[this.props.accessor])) {
+        if (!isObject(c.item.values)) {
           const percentage = c.item[this.props.accessor] / divisor;
           const pieces = percentage.toString().split(".");
-          const whole = parseInt(pieces[0]);
+          let whole = parseInt(pieces[0]);
           let decimal = parseFloat("." + pieces[1]);
           if (isNaN(decimal)) {
             decimal = 0;
           }
           wholeTotal += whole;
-          c.item[this.props.accessor] = {
+          //this is causing the issue
+          //change this to label instead of this.props.accessor?
+          c.item.values = {
             index: i,
             whole,
             decimal
           };
         } else {
-          wholeTotal += c.item[this.props.accessor].whole;
+          wholeTotal += c.item.values.whole;
         }
       });
 
       const hamiltonDiff = 100 - wholeTotal;
       const sortedCurves = [...chart.curves].sort((a, b) =>
-        a.item[this.props.accessor].decimal <
-        b.item[this.props.accessor].decimal
-          ? 1
-          : -1
+        a.item.values.decimal < b.item.values.decimal ? 1 : -1
       );
       for (let i = 0; i < hamiltonDiff; i++) {
-        uppedIndices.push(sortedCurves[i].item[this.props.accessor].index);
+        uppedIndices.push(sortedCurves[i].item.values.index);
       }
     }
 
@@ -251,7 +238,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         if (total === 0) {
           value = 0 + "%";
         } else {
-          const item = c.item[this.props.accessor];
+          const item = c.item.values;
           let percentage = item.whole;
           if (uppedIndices.includes(item.index)) {
             percentage += 1;
@@ -263,7 +250,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
           }
         }
       }
-      console.log("label name", this.state.calculating[c.index].label.name);
+
       return (
         <G key={Math.random()}>
           <Path
