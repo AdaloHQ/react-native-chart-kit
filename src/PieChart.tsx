@@ -207,8 +207,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
             decimal = 0;
           }
           wholeTotal += whole;
-          //this is causing the issue
-          //change this to label instead of this.props.accessor?
+          //had to create a new object here to use for percentages, chart wouldn't render when assigning the object to c.item[this.props.accessor]
           c.item.values = {
             index: i,
             whole,
