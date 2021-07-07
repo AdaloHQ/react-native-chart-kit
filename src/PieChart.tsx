@@ -85,6 +85,9 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
           label = label.slice(0, -3);
         }
         if (isNaN(fontSize)) {
+          if (!fontSize) {
+            fontSize = "12px";
+          }
           target = target - fontSize.split("p")[0] * 2;
         } else {
           target = target - fontSize * 2;
