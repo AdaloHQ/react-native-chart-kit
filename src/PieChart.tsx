@@ -290,7 +290,11 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
           ) : null}
           {hasLegend ? (
             <Text
-              fill={c.item.legendFontColor}
+              fill={
+                this.state.calculating[i].calculating
+                  ? "transparent"
+                  : c.item.legendFontColor
+              }
               fontSize={c.item.legendFontSize}
               fontFamily={c.item.legendFontFamily}
               fontWeight={c.item.legendFontWeight}
