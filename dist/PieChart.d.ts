@@ -13,6 +13,7 @@ export interface PieChartProps extends AbstractChartProps {
   style?: Partial<ViewStyle>;
   avoidFalseZero?: boolean;
   chartWidthPercentage: number;
+  showLabelPrefix: boolean;
 }
 declare type PieChartState = {
   data: Array<any>;

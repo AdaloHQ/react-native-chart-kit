@@ -20,6 +20,7 @@ export interface PieChartProps extends AbstractChartProps {
   style?: Partial<ViewStyle>;
   avoidFalseZero?: boolean;
   chartWidthPercentage: number;
+  showLabelPrefix: boolean;
 }
 
 type PieChartState = {
@@ -234,7 +235,11 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       let value: string;
 
       if (absolute) {
-        value = c.item[this.props.accessor];
+        if (this.props.showLabelPrefix) {
+          value = c.item[this.props.accessor];
+        } else {
+          value = "";
+        }
       } else {
         //calculate percentage using Hamilton's method
         if (total === 0) {
@@ -278,6 +283,9 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
                 ((this.props.height * 0.8) / this.props.data.length) * i +
                 12
               }
+              onPress={c.item.action}
+              //@ts-ignore
+              onClick={c.item.action}
             />
           ) : null}
           {hasLegend ? (
@@ -292,6 +300,9 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
                 ((this.props.height * 0.8) / this.props.data.length) * i +
                 12 * 2
               }
+              onPress={c.item.action}
+              //@ts-ignore
+              onClick={c.item.action}
             >
               {`${value} ${this.state.calculating[c.index].label.name}`}
             </Text>
