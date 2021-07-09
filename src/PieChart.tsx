@@ -41,18 +41,12 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       for (let i = 0; i < this.props.data.length; i++) {
         calculating[i] = { label: this.props.data[i], calculating: true };
       }
-      // this.setState({
-      //   calculating,
-      //   onLayout: true,
-      //   ...this.props,
-      // })
       if (
         this.state.calculating.filter(i => i.calculating === true).length ===
           0 &&
         this.props.width === prevProps.width &&
         !this.props.editor
       ) {
-        console.log("same", this.state);
         this.setState({
           calculating,
           onLayout: false,
@@ -60,21 +54,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
           ...this.state
         });
       } else {
-        console.log(
-          "this",
-          this.props.width,
-          "prev",
-          prevProps.width,
-          this.props.width === prevProps.width
-        );
-        console.log(this.state.calculating.filter(i => i.calculating === true));
-        console.log(
-          this.state.calculating.filter(i => i.calculating === true).length ===
-            0 &&
-            this.props.width !== prevProps.width &&
-            this.props.width === prevProps.width
-        );
-        console.log("diff", this.state);
         this.setState({
           calculating,
           onLayout: true,
@@ -86,7 +65,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
   }
 
   constructor(props) {
-    console.log("constructor");
     super(props);
     let calculating = [];
     for (let i = 0; i < this.props.data.length; i++) {
@@ -111,7 +89,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
     } = this.props;
 
     const onLayout = (e, index, fontSize, label) => {
-      console.log("onlayout", this.state.onLayout);
       if (this.state.onLayout) {
         let width = e.nativeEvent.layout.width;
         let target =
