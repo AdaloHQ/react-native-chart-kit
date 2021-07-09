@@ -21,10 +21,12 @@ export interface PieChartProps extends AbstractChartProps {
   avoidFalseZero?: boolean;
   chartWidthPercentage: number;
   showLabelPrefix: boolean;
+  editor: boolean;
 }
 
 type PieChartState = {
   data: Array<any>;
+  onLayout: boolean;
   calculating: Array<any>;
 };
 
@@ -39,14 +41,52 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       for (let i = 0; i < this.props.data.length; i++) {
         calculating[i] = { label: this.props.data[i], calculating: true };
       }
-      this.setState({
-        calculating,
-        ...this.props
-      });
+      // this.setState({
+      //   calculating,
+      //   onLayout: true,
+      //   ...this.props,
+      // })
+      if (
+        this.state.calculating.filter(i => i.calculating === true).length ===
+          0 &&
+        this.props.width === prevProps.width &&
+        !this.props.editor
+      ) {
+        console.log("same", this.state);
+        this.setState({
+          calculating,
+          onLayout: false,
+          ...this.props,
+          ...this.state
+        });
+      } else {
+        console.log(
+          "this",
+          this.props.width,
+          "prev",
+          prevProps.width,
+          this.props.width === prevProps.width
+        );
+        console.log(this.state.calculating.filter(i => i.calculating === true));
+        console.log(
+          this.state.calculating.filter(i => i.calculating === true).length ===
+            0 &&
+            this.props.width !== prevProps.width &&
+            this.props.width === prevProps.width
+        );
+        console.log("diff", this.state);
+        this.setState({
+          calculating,
+          onLayout: true,
+          ...this.props
+          // ...this.state
+        });
+      }
     }
   }
 
   constructor(props) {
+    console.log("constructor");
     super(props);
     let calculating = [];
     for (let i = 0; i < this.props.data.length; i++) {
@@ -55,6 +95,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
 
     this.state = {
       calculating,
+      onLayout: true,
       ...props,
       labelData: this.props.data
     };
@@ -70,41 +111,44 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
     } = this.props;
 
     const onLayout = (e, index, fontSize, label) => {
-      let width = e.nativeEvent.layout.width;
-      let target =
-        this.props.width - this.props.width * chartWidthPercentage - 84;
-      let calculating = this.state.calculating;
+      console.log("onlayout", this.state.onLayout);
+      if (this.state.onLayout) {
+        let width = e.nativeEvent.layout.width;
+        let target =
+          this.props.width - this.props.width * chartWidthPercentage - 84;
+        let calculating = this.state.calculating;
 
-      if (width < target) {
-        calculating[index].calculating = false;
-        this.setState({
-          calculating,
-          ...this.state
-        });
-      } else {
-        if (label.slice(-3) === "...") {
-          label = label.slice(0, -3);
-        }
-        if (isNaN(fontSize)) {
-          if (!fontSize) {
-            fontSize = "12px";
-          }
-          target = target - fontSize.split("p")[0] * 2;
-        } else {
-          target = target - fontSize * 2;
-        }
-        const numberOfCharacters = label.length;
-        const ratio = target / width;
-        const targetCharacters = Math.floor(ratio * numberOfCharacters);
-        label = `${label.slice(0, targetCharacters)}...`;
-        calculating[index].label.name = label;
-        if (label === "...") {
+        if (width < target) {
           calculating[index].calculating = false;
+          this.setState({
+            calculating,
+            ...this.state
+          });
+        } else {
+          if (label.slice(-3) === "...") {
+            label = label.slice(0, -3);
+          }
+          if (isNaN(fontSize)) {
+            if (!fontSize) {
+              fontSize = "12px";
+            }
+            target = target - fontSize.split("p")[0] * 2;
+          } else {
+            target = target - fontSize * 2;
+          }
+          const numberOfCharacters = label.length;
+          const ratio = target / width;
+          const targetCharacters = Math.floor(ratio * numberOfCharacters);
+          label = `${label.slice(0, targetCharacters)}...`;
+          calculating[index].label.name = label;
+          if (label === "...") {
+            calculating[index].calculating = false;
+          }
+          this.setState({
+            calculating,
+            ...this.state
+          });
         }
-        this.setState({
-          calculating,
-          ...this.state
-        });
       }
     };
 
@@ -291,7 +335,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
           {hasLegend ? (
             <Text
               fill={
-                this.state.calculating[i].calculating
+                this.state.calculating[i].calculating && !this.props.editor
                   ? "transparent"
                   : c.item.legendFontColor
               }

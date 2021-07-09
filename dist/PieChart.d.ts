@@ -14,9 +14,11 @@ export interface PieChartProps extends AbstractChartProps {
   avoidFalseZero?: boolean;
   chartWidthPercentage: number;
   showLabelPrefix: boolean;
+  editor: boolean;
 }
 declare type PieChartState = {
   data: Array<any>;
+  onLayout: boolean;
   calculating: Array<any>;
 };
 declare class PieChart extends AbstractChart<PieChartProps, PieChartState> {
