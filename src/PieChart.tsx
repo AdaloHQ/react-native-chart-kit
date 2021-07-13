@@ -30,12 +30,21 @@ type PieChartState = {
   calculating: Array<any>;
 };
 
+const compareArrays = (a, b) => {
+  return (
+    a.length === b.length &&
+    a.every(
+      (value, index) => JSON.stringify(value) === JSON.stringify(b[index])
+    )
+  );
+};
+
 class PieChart extends AbstractChart<PieChartProps, PieChartState> {
   componentDidUpdate(prevProps) {
     if (
       this.props.width !== prevProps.width ||
       this.props.chartWidthPercentage !== prevProps.chartWidthPercentage ||
-      this.props.data != prevProps.data
+      !compareArrays(this.props.data, prevProps.data)
     ) {
       let calculating = [];
       for (let i = 0; i < this.props.data.length; i++) {
@@ -45,7 +54,8 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         this.state.calculating.filter(i => i.calculating === true).length ===
           0 &&
         this.props.width === prevProps.width &&
-        !this.props.editor
+        !this.props.editor &&
+        compareArrays(this.props.data, prevProps.data)
       ) {
         this.setState({
           calculating,
