@@ -30,12 +30,31 @@ type PieChartState = {
   calculating: Array<any>;
 };
 
-const compareArrays = (a, b) => {
+const compareDataArrays = (a, b) => {
+  //TODO: remove values field from a and b
+  //TODO: get the sum of values to make sure percentages stay the same
+  let sumA = a.reduce((accumulator, item) => {
+    return accumulator + item.value;
+  }, 0);
+
+  let sumB = b.reduce((accumulator, item) => {
+    return accumulator + item.value;
+  }, 0);
+
   return (
+    sumA === sumB &&
     a.length === b.length &&
-    a.every(
-      (value, index) => JSON.stringify(value) === JSON.stringify(b[index])
-    )
+    a.every((value, index) => {
+      const aCopy = {
+        ...value,
+        values: null
+      };
+      const bCopy = {
+        ...b[index],
+        values: null
+      };
+      return JSON.stringify(aCopy) === JSON.stringify(bCopy);
+    })
   );
 };
 
@@ -44,7 +63,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
     if (
       this.props.width !== prevProps.width ||
       this.props.chartWidthPercentage !== prevProps.chartWidthPercentage ||
-      !compareArrays(this.props.data, prevProps.data)
+      !compareDataArrays(this.props.data, prevProps.data)
     ) {
       let calculating = [];
       for (let i = 0; i < this.props.data.length; i++) {
@@ -55,7 +74,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
           0 &&
         this.props.width === prevProps.width &&
         !this.props.editor &&
-        compareArrays(this.props.data, prevProps.data)
+        compareDataArrays(this.props.data, prevProps.data)
       ) {
         this.setState({
           calculating,
