@@ -287,6 +287,12 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       }
     }
 
+    if (!absolute) {
+      chart.curves = chart.curves.sort(
+        (a, b) => a.item.values.whole > b.item.values.whole
+      );
+    }
+
     const slices = chart.curves.map((c, i) => {
       let value: string;
 
