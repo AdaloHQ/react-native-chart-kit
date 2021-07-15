@@ -62,6 +62,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
   componentDidUpdate(prevProps) {
     if (
       this.props.width !== prevProps.width ||
+      this.props.height !== prevProps.height ||
       this.props.chartWidthPercentage !== prevProps.chartWidthPercentage ||
       !compareDataArrays(this.props.data, prevProps.data)
     ) {
@@ -99,7 +100,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
     for (let i = 0; i < this.props.data.length; i++) {
       calculating[i] = { label: this.props.data[i], calculating: true };
     }
-
     this.state = {
       calculating,
       onLayout: true,
@@ -167,6 +167,12 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         value
       } = item.label;
       if (item.calculating && this.props.hasLegend) {
+        if (this.props.absolute === false) {
+          value = "55%";
+        }
+        if (this.props.showLabelPrefix === false) {
+          value = "";
+        }
         if (!isObject(value)) {
           return (
             <View
@@ -238,7 +244,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       }
     });
 
-    const total = this.props.data.reduce((sum, item) => {
+    const total = this.state.data.reduce((sum, item) => {
       if (isObject(item[this.props.accessor])) {
         return sum + item[this.props.accessor].whole;
       } else {
@@ -308,11 +314,16 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         }
       }
 
+      let textColor = this.state.calculating[i]
+        ? c.item.legendFontColor
+        : "transparent";
+
       return (
         <G key={Math.random()}>
           <Path
             d={c.sector.path.print()}
             fill={c.item.color}
+            // fill={textColor}
             onPress={c.item.action}
             //@ts-ignore
             onClick={c.item.action}
@@ -330,7 +341,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
               }
               y={
                 -(this.props.height / 2.5) +
-                ((this.props.height * 0.8) / this.props.data.length) * i +
+                ((this.props.height * 0.8) / this.state.data.length) * i +
                 12
               }
               onPress={c.item.action}
@@ -340,25 +351,21 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
           ) : null}
           {hasLegend ? (
             <Text
-              fill={
-                this.state.calculating[i].calculating && !this.props.editor
-                  ? "transparent"
-                  : c.item.legendFontColor
-              }
+              fill={textColor}
               fontSize={c.item.legendFontSize}
               fontFamily={c.item.legendFontFamily}
               fontWeight={c.item.legendFontWeight}
               x={this.props.width / (100 / (chartWidthPercentage * 100) + 0.5)}
               y={
                 -(this.props.height / 2.5) +
-                ((this.props.height * 0.8) / this.props.data.length) * i +
+                ((this.props.height * 0.8) / this.state.data.length) * i +
                 12 * 2
               }
               onPress={c.item.action}
               //@ts-ignore
               onClick={c.item.action}
             >
-              {`${value} ${this.state.calculating[c.index].label.name}`}
+              {`${value} ${c.item.name}`}
             </Text>
           ) : null}
         </G>
