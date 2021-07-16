@@ -3,6 +3,7 @@ import Pie from "paths-js/pie";
 import React, { Fragment } from "react";
 import { View, ViewStyle, Text as NativeText } from "react-native";
 import { G, Path, Rect, Svg, Text } from "react-native-svg";
+import clone from "rfdc/default";
 
 import AbstractChart, { AbstractChartProps } from "./AbstractChart";
 // import TextWidthFinder from "./TextWidthFinder";
@@ -74,7 +75,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         this.state.calculating.filter(i => i.calculating === true).length ===
           0 &&
         this.props.width === prevProps.width &&
-        !this.props.editor &&
+        // !this.props.editor &&
         compareDataArrays(this.props.data, prevProps.data)
       ) {
         this.setState({
@@ -117,6 +118,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       avoidFalseZero = false
     } = this.props;
 
+    //TODO: move setState out of onlayout since it runs in a for loop
     const onLayout = (e, index, fontSize, label) => {
       if (this.state.onLayout) {
         let width = e.nativeEvent.layout.width;
@@ -167,6 +169,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         value
       } = item.label;
       if (item.calculating && this.props.hasLegend) {
+        console.log("item", item, "index", index);
         if (this.props.absolute === false) {
           value = "55%";
         }
