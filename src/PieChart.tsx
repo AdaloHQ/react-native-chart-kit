@@ -3,7 +3,6 @@ import Pie from "paths-js/pie";
 import React, { Fragment } from "react";
 import { View, ViewStyle, Text as NativeText } from "react-native";
 import { G, Path, Rect, Svg, Text } from "react-native-svg";
-import clone from "rfdc/default";
 
 import AbstractChart, { AbstractChartProps } from "./AbstractChart";
 // import TextWidthFinder from "./TextWidthFinder";
