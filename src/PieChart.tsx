@@ -168,7 +168,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         value
       } = item.label;
       if (item.calculating && this.props.hasLegend) {
-        console.log("item", item, "index", index);
         if (this.props.absolute === false) {
           value = "55%";
         }
