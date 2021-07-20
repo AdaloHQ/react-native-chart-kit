@@ -284,7 +284,13 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         a.item.values.decimal < b.item.values.decimal ? 1 : -1
       );
       for (let i = 0; i < hamiltonDiff; i++) {
-        uppedIndices.push(sortedCurves[i].item.values.index);
+        let uppedVal = sortedCurves[i].item.values.whole;
+        sortedCurves.reverse().some(item => {
+          if (item.item.values.whole === uppedVal) {
+            uppedIndices.push(item.item.values.index);
+            return true;
+          }
+        });
       }
     }
 
