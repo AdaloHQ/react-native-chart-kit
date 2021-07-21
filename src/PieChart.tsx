@@ -308,7 +308,9 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       );
     }
 
-    chartCurvesSorted.push(otherSlice);
+    if (otherSlice) {
+      chartCurvesSorted.push(otherSlice);
+    }
 
     const slices = chartCurvesSorted.map((c, i) => {
       let value: string;
