@@ -285,22 +285,32 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       );
       for (let i = 0; i < hamiltonDiff; i++) {
         let uppedVal = sortedCurves[i].item.values.whole;
-        sortedCurves.reverse().some(item => {
+        sortedCurves.some(item => {
           if (item.item.values.whole === uppedVal) {
             uppedIndices.push(item.item.values.index);
+            chart.curves[item.item.values.index].item.values.whole += 1;
             return true;
           }
         });
       }
     }
 
+    let chartCurvesSorted = [...chart.curves].filter(
+      item => item.item.otherSlice !== true
+    );
+    let otherSlice = [...chart.curves].find(
+      item => item.item.otherSlice === true
+    );
+
     if (!absolute) {
-      chart.curves = chart.curves.sort(
-        (a, b) => a.item.values.whole > b.item.values.whole
+      chartCurvesSorted = chartCurvesSorted.sort((a, b) =>
+        a.item.values.whole < b.item.values.whole ? 1 : -1
       );
     }
 
-    const slices = chart.curves.map((c, i) => {
+    chartCurvesSorted.push(otherSlice);
+
+    const slices = chartCurvesSorted.map((c, i) => {
       let value: string;
 
       if (absolute) {
@@ -316,9 +326,9 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         } else {
           const item = c.item.values;
           let percentage = item.whole;
-          if (uppedIndices.includes(item.index)) {
-            percentage += 1;
-          }
+          // if (uppedIndices.includes(item.index)) {
+          //   percentage += 1;
+          // }
           if (avoidFalseZero && item.whole === 0 && item.decimal !== 0) {
             value = "<1%";
           } else {
