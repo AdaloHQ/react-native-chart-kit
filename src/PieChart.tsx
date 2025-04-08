@@ -358,8 +358,8 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
               width={16}
               height={16}
               fill={c.item.color}
-              rx={8}
-              ry={8}
+              rx={Number(8)}
+              ry={Number(8)}
               x={
                 this.props.width / (100 / (chartWidthPercentage * 100) + 0.5) -
                 24
@@ -421,8 +421,8 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
           <Rect
             width="100%"
             height={this.props.height}
-            rx={borderRadius}
-            ry={borderRadius}
+            rx={Number(borderRadius)}
+            ry={Number(borderRadius)}
             fill={backgroundColor}
           />
           <G
@@ -431,7 +431,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
               Number(this.props.paddingLeft ? this.props.paddingLeft : 0)
             }
             y={this.props.height / 2}
-            // @ts-expect-error
             width={this.props.width}
           >
             {slices}

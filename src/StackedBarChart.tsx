@@ -242,8 +242,8 @@ class StackedBarChart extends AbstractChart<
           <Rect
             width="100%"
             height={height}
-            rx={borderRadius}
-            ry={borderRadius}
+            rx={Number(borderRadius)}
+            ry={Number(borderRadius)}
             fill="url(#backgroundGradient)"
           />
           <G>

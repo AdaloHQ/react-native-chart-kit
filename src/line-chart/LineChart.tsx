@@ -854,8 +854,8 @@ class LineChart extends AbstractChart<LineChartProps, LineChartState> {
           <Rect
             width="100%"
             height={height + legendOffset}
-            rx={borderRadius}
-            ry={borderRadius}
+            rx={Number(borderRadius)}
+            ry={Number(borderRadius)}
             fill="url(#backgroundGradient)"
             fillOpacity={transparent ? 0 : 1}
           />
