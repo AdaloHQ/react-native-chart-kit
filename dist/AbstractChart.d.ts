@@ -58,6 +58,7 @@ declare class AbstractChart<IProps extends AbstractChartProps, IState extends Ab
             [name: string]: unknown;
         };
         fontFeatureSettings?: string;
+        color?: import("react-native").ColorValue;
         fill: import("react-native").ColorValue;
         fillOpacity?: import("react-native-svg").NumberProp;
         fillRule?: import("react-native-svg").FillRule;
@@ -113,6 +114,7 @@ declare class AbstractChart<IProps extends AbstractChartProps, IState extends Ab
         markerMid?: string;
         markerEnd?: string;
         mask?: string;
+        filter?: string;
         onLayout?: (event: import("react-native").LayoutChangeEvent) => void;
         accessibilityLabel?: string;
         accessible?: boolean;
@@ -150,6 +152,7 @@ declare class AbstractChart<IProps extends AbstractChartProps, IState extends Ab
             [name: string]: unknown;
         };
         fontFeatureSettings?: string;
+        color?: import("react-native").ColorValue;
         fill: import("react-native").ColorValue;
         fillOpacity?: import("react-native-svg").NumberProp;
         fillRule?: import("react-native-svg").FillRule;
@@ -205,6 +208,7 @@ declare class AbstractChart<IProps extends AbstractChartProps, IState extends Ab
         markerMid?: string;
         markerEnd?: string;
         mask?: string;
+        filter?: string;
         onLayout?: (event: import("react-native").LayoutChangeEvent) => void;
         accessibilityLabel?: string;
         accessible?: boolean;
@@ -242,6 +246,7 @@ declare class AbstractChart<IProps extends AbstractChartProps, IState extends Ab
             [name: string]: unknown;
         };
         fontFeatureSettings?: string;
+        color?: import("react-native").ColorValue;
         fill: import("react-native").ColorValue;
         fillOpacity?: import("react-native-svg").NumberProp;
         fillRule?: import("react-native-svg").FillRule;
@@ -297,6 +302,7 @@ declare class AbstractChart<IProps extends AbstractChartProps, IState extends Ab
         markerMid?: string;
         markerEnd?: string;
         mask?: string;
+        filter?: string;
         onLayout?: (event: import("react-native").LayoutChangeEvent) => void;
         accessibilityLabel?: string;
         accessible?: boolean;

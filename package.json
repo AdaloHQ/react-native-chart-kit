@@ -22,9 +22,9 @@
     "react-native": "0.77.2",
     "react-native-flash-message": "^0.4.0",
     "react-native-scrollable-tab-view": "^1.0.0",
-    "react-native-svg": "^14.1.0",
+    "react-native-svg": "^15.11.2",
     "react-test-renderer": "18.2.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.8.3"
   },
   "_main": "./node_modules/expo/AppEntry.js",
   "main": "./dist/index.js",
@@ -68,8 +68,6 @@
     "url": "https://github.com/AdaloHQ/react-native-chart-kit"
   },
   "resolutions": {
-    "@types/react": "^18.2.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "@types/react": "^18.2.0"
   }
 }
