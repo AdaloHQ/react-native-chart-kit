@@ -343,6 +343,9 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         ? c.item.legendFontColor
         : "transparent";
 
+      console.log("c.item: ", c.item)
+      console.log("this.state: ", this.state)
+
       return (
         <G key={Math.random()}>
           <Path
