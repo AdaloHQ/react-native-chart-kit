@@ -5,6 +5,7 @@ import { View, ViewStyle, Text as NativeText } from "react-native";
 import { G, Path, Rect, Svg, Text } from "react-native-svg";
 
 import AbstractChart, { AbstractChartProps } from "./AbstractChart";
+import { hslToRgba } from "./Utils";
 // import TextWidthFinder from "./TextWidthFinder";
 
 export interface PieChartProps extends AbstractChartProps {
@@ -344,7 +345,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         : "transparent";
 
       if (typeof c?.item?.color === "string" && c.item.color.includes('hsl')) {
-        c.item.color = c.item.color.replace('%', '')
+        c.item.color = hslToRgba(c.item.color)
       }
 
       console.log("c.item: ", c.item)
