@@ -10,15 +10,15 @@ export function mapValue(
 
 
 export function hslToRgba(hslString: string): string {
-  const matches = hslString.match(/hsla?\((\d+),\s*(\d+)%,\s*(\d+)%(?:,\s*([\d.]+)\s*)?\)/i);
+  const matches = hslString.match(/hsla?\((\d+\.?\d*),\s*(\d+\.?\d*)%,\s*(\d+\.?\d*)%(?:,\s*([\d.]+)\s*)?\)/i);
 
   if (!matches) {
     return '#000000';
   }
 
-  const h = parseInt(matches[1]);
-  const s = parseInt(matches[2]) / 100;
-  const l = parseInt(matches[3]) / 100;
+  const h = parseFloat(matches[1]);
+  const s = parseFloat(matches[2]) / 100;
+  const l = parseFloat(matches[3]) / 100;
   const a = matches[4] ? parseFloat(matches[4]) : 1;
 
   const c = (1 - Math.abs(2 * l - 1)) * s;
