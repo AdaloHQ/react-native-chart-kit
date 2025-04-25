@@ -343,8 +343,13 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         ? c.item.legendFontColor
         : "transparent";
 
+      if (typeof c?.item?.color === "string" && c.item.color.includes('hsl')) {
+        c.item.color = c.item.color.replace('%', '')
+      }
+
       console.log("c.item: ", c.item)
       console.log("this.state: ", this.state)
+      console.log("backgroundColor: ", backgroundColor)
 
       return (
         <G key={Math.random()}>
