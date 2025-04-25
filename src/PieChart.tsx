@@ -344,6 +344,8 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         ? c.item.legendFontColor
         : "transparent";
 
+      console.log("c.item before: ", c.item)
+
       if (typeof c?.item?.color === "string" && c.item.color.includes('hsl')) {
         c.item.color = hslToRgba(c.item.color)
       }
