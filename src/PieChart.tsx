@@ -5,7 +5,6 @@ import { View, ViewStyle, Text as NativeText } from "react-native";
 import { G, Path, Rect, Svg, Text } from "react-native-svg";
 
 import AbstractChart, { AbstractChartProps } from "./AbstractChart";
-import { hslToRgba } from "./Utils";
 // import TextWidthFinder from "./TextWidthFinder";
 
 export interface PieChartProps extends AbstractChartProps {
@@ -344,10 +343,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         ? c.item.legendFontColor
         : "transparent";
 
-      if (typeof c?.item?.color === "string" && c.item.color.includes('hsl')) {
-        c.item.color = hslToRgba(c.item.color)
-      }
-
       return (
         <G key={Math.random()}>
           <Path
@@ -363,8 +358,8 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
               width={16}
               height={16}
               fill={c.item.color}
-              rx={Number(8)}
-              ry={Number(8)}
+              rx={8}
+              ry={8}
               x={
                 this.props.width / (100 / (chartWidthPercentage * 100) + 0.5) -
                 24
@@ -426,8 +421,8 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
           <Rect
             width="100%"
             height={this.props.height}
-            rx={Number(borderRadius)}
-            ry={Number(borderRadius)}
+            rx={borderRadius}
+            ry={borderRadius}
             fill={backgroundColor}
           />
           <G
@@ -436,6 +431,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
               Number(this.props.paddingLeft ? this.props.paddingLeft : 0)
             }
             y={this.props.height / 2}
+            // @ts-expect-error
             width={this.props.width}
           >
             {slices}

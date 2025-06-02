@@ -1,338 +1,538 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import { ChartConfig, Dataset, PartialBy } from "./HelperTypes";
 export interface AbstractChartProps {
-    fromZero?: boolean;
-    fromNumber?: number;
-    chartConfig?: AbstractChartConfig;
-    yAxisLabel?: string;
-    yAxisSuffix?: string;
-    yLabelsOffset?: number;
-    yAxisInterval?: number;
-    xAxisLabel?: string;
-    xLabelsOffset?: number;
-    hidePointsAtIndex?: number[];
+  fromZero?: boolean;
+  fromNumber?: number;
+  chartConfig?: AbstractChartConfig;
+  yAxisLabel?: string;
+  yAxisSuffix?: string;
+  yLabelsOffset?: number;
+  yAxisInterval?: number;
+  xAxisLabel?: string;
+  xLabelsOffset?: number;
+  hidePointsAtIndex?: number[];
 }
 export interface AbstractChartConfig extends ChartConfig {
-    count?: number;
-    data?: Dataset[];
-    width?: number;
-    height?: number;
-    paddingTop?: number;
-    paddingRight?: number;
-    horizontalLabelRotation?: number;
-    formatYLabel?: (yLabel: string) => string;
-    labels?: string[];
-    horizontalOffset?: number;
-    stackedBar?: boolean;
-    verticalLabelRotation?: number;
-    formatXLabel?: (xLabel: string) => string;
-    verticalLabelsHeightPercentage?: number;
-    formatTopBarValue?: (topBarValue: number) => string | number;
+  count?: number;
+  data?: Dataset[];
+  width?: number;
+  height?: number;
+  paddingTop?: number;
+  paddingRight?: number;
+  horizontalLabelRotation?: number;
+  formatYLabel?: (yLabel: string) => string;
+  labels?: string[];
+  horizontalOffset?: number;
+  stackedBar?: boolean;
+  verticalLabelRotation?: number;
+  formatXLabel?: (xLabel: string) => string;
+  verticalLabelsHeightPercentage?: number;
 }
-export type AbstractChartState = {};
+export declare type AbstractChartState = {};
 export declare const DEFAULT_X_LABELS_HEIGHT_PERCENTAGE = 0.75;
-declare class AbstractChart<IProps extends AbstractChartProps, IState extends AbstractChartState> extends Component<AbstractChartProps & IProps, AbstractChartState & IState> {
-    calcScaler: (data: number[]) => number;
-    calcBaseHeight: (data: number[], height: number) => number;
-    calcHeight: (val: number, data: number[], height: number) => number;
-    getPropsForBackgroundLines(): {
-        stroke: string;
-        strokeDasharray: string;
-        strokeWidth: number;
+declare class AbstractChart<
+  IProps extends AbstractChartProps,
+  IState extends AbstractChartState
+> extends Component<AbstractChartProps & IProps, AbstractChartState & IState> {
+  calcScaler: (data: number[]) => number;
+  calcBaseHeight: (data: number[], height: number) => number;
+  calcHeight: (val: number, data: number[], height: number) => number;
+  getPropsForBackgroundLines(): {
+    stroke: string;
+    strokeDasharray: string;
+    strokeWidth: number;
+  };
+  getPropsForLabels(): {
+    x?: import("react-native-svg").NumberArray;
+    y?: import("react-native-svg").NumberArray;
+    dx?: import("react-native-svg").NumberArray;
+    dy?: import("react-native-svg").NumberArray;
+    rotate?: import("react-native-svg").NumberArray;
+    opacity?: string | number;
+    inlineSize?: string | number;
+    alignmentBaseline?: import("react-native-svg").AlignmentBaseline;
+    baselineShift?: import("react-native-svg").BaselineShift;
+    verticalAlign?: string | number;
+    lengthAdjust?: import("react-native-svg").LengthAdjust;
+    textLength?: string | number;
+    fontData?: {
+      [name: string]: unknown;
     };
-    getPropsForLabels(): {
-        children?: React.ReactNode;
-        x?: import("react-native-svg").NumberArray;
-        y?: import("react-native-svg").NumberArray;
-        dx?: import("react-native-svg").NumberArray;
-        dy?: import("react-native-svg").NumberArray;
-        rotate?: import("react-native-svg").NumberArray;
-        opacity?: import("react-native-svg").NumberProp;
-        inlineSize?: import("react-native-svg").NumberProp;
-        alignmentBaseline?: import("react-native-svg").AlignmentBaseline;
-        baselineShift?: import("react-native-svg").BaselineShift;
-        verticalAlign?: import("react-native-svg").NumberProp;
-        lengthAdjust?: import("react-native-svg").LengthAdjust;
-        textLength?: import("react-native-svg").NumberProp;
-        fontData?: null | {
-            [name: string]: unknown;
-        };
-        fontFeatureSettings?: string;
-        color?: import("react-native").ColorValue;
-        fill: import("react-native").ColorValue;
-        fillOpacity?: import("react-native-svg").NumberProp;
-        fillRule?: import("react-native-svg").FillRule;
-        stroke?: import("react-native").ColorValue;
-        strokeWidth?: import("react-native-svg").NumberProp;
-        strokeOpacity?: import("react-native-svg").NumberProp;
-        strokeDasharray?: ReadonlyArray<import("react-native-svg").NumberProp> | import("react-native-svg").NumberProp;
-        strokeDashoffset?: import("react-native-svg").NumberProp;
-        strokeLinecap?: import("react-native-svg").Linecap;
-        strokeLinejoin?: import("react-native-svg").Linejoin;
-        strokeMiterlimit?: import("react-native-svg").NumberProp;
-        vectorEffect?: import("react-native-svg").VectorEffect;
-        clipRule?: import("react-native-svg").FillRule;
-        clipPath?: string;
-        translate?: import("react-native-svg").NumberArray;
-        translateX?: import("react-native-svg").NumberProp;
-        translateY?: import("react-native-svg").NumberProp;
-        origin?: import("react-native-svg").NumberArray;
-        originX?: import("react-native-svg").NumberProp;
-        originY?: import("react-native-svg").NumberProp;
-        scale?: import("react-native-svg").NumberArray;
-        scaleX?: import("react-native-svg").NumberProp;
-        scaleY?: import("react-native-svg").NumberProp;
-        skew?: import("react-native-svg").NumberArray;
-        skewX?: import("react-native-svg").NumberProp;
-        skewY?: import("react-native-svg").NumberProp;
-        rotation?: import("react-native-svg").NumberProp;
-        transform?: import("react-native-svg").ColumnMajorTransformMatrix | string | import("react-native").TransformsStyle["transform"];
-        pointerEvents?: "box-none" | "none" | "box-only" | "auto";
-        onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderTerminationRequest?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onResponderTerminate?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onStartShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onMoveShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        disabled?: boolean;
-        onPress?: (event: import("react-native").GestureResponderEvent) => void;
-        onPressIn?: (event: import("react-native").GestureResponderEvent) => void;
-        onPressOut?: (event: import("react-native").GestureResponderEvent) => void;
-        onLongPress?: (event: import("react-native").GestureResponderEvent) => void;
-        delayPressIn?: number;
-        delayPressOut?: number;
-        delayLongPress?: number;
-        id?: string;
-        marker?: string;
-        markerStart?: string;
-        markerMid?: string;
-        markerEnd?: string;
-        mask?: string;
-        filter?: string;
-        onLayout?: (event: import("react-native").LayoutChangeEvent) => void;
-        accessibilityLabel?: string;
-        accessible?: boolean;
-        testID?: string;
-        font?: import("react-native-svg").FontObject;
-        fontStyle?: import("react-native-svg").FontStyle;
-        fontVariant?: import("react-native-svg").FontVariant;
-        fontWeight?: import("react-native-svg").FontWeight;
-        fontStretch?: import("react-native-svg").FontStretch;
-        fontSize: import("react-native-svg").NumberProp;
-        fontFamily?: string;
-        textAnchor?: import("react-native-svg").TextAnchor;
-        textDecoration?: import("react-native-svg").TextDecoration;
-        letterSpacing?: import("react-native-svg").NumberProp;
-        wordSpacing?: import("react-native-svg").NumberProp;
-        kerning?: import("react-native-svg").NumberProp;
-        fontVariantLigatures?: import("react-native-svg").FontVariantLigatures;
-        fontVariationSettings?: string;
+    fontFeatureSettings?: string;
+    fill: import("react-native-svg").Color;
+    fillOpacity?: string | number;
+    fillRule?: import("react-native-svg").FillRule;
+    stroke?: import("react-native-svg").Color;
+    strokeWidth?: string | number;
+    strokeOpacity?: string | number;
+    strokeDasharray?: string | number | readonly (string | number)[];
+    strokeDashoffset?: string | number;
+    strokeLinecap?: import("react-native-svg").Linecap;
+    strokeLinejoin?: "miter" | "bevel" | "round";
+    strokeMiterlimit?: string | number;
+    clipRule?: import("react-native-svg").FillRule;
+    clipPath?: string;
+    transform?:
+      | string
+      | import("react-native-svg").TransformObject
+      | import("react-native-svg").ColumnMajorTransformMatrix;
+    translate?: import("react-native-svg").NumberArray;
+    translateX?: string | number;
+    translateY?: string | number;
+    origin?: import("react-native-svg").NumberArray;
+    originX?: string | number;
+    originY?: string | number;
+    scale?: import("react-native-svg").NumberArray;
+    scaleX?: string | number;
+    scaleY?: string | number;
+    skew?: import("react-native-svg").NumberArray;
+    skewX?: string | number;
+    skewY?: string | number;
+    rotation?: string | number;
+    vectorEffect?:
+      | "none"
+      | "non-scaling-stroke"
+      | "nonScalingStroke"
+      | "default"
+      | "inherit"
+      | "uri";
+    pointerEvents?: "none" | "box-none" | "box-only" | "auto";
+    onStartShouldSetResponder?: (
+      event: import("react-native").GestureResponderEvent
+    ) => boolean;
+    onMoveShouldSetResponder?: (
+      event: import("react-native").GestureResponderEvent
+    ) => boolean;
+    onResponderEnd?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onResponderGrant?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onResponderReject?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onResponderMove?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onResponderRelease?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onResponderStart?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onResponderTerminationRequest?: (
+      event: import("react-native").GestureResponderEvent
+    ) => boolean;
+    onResponderTerminate?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onStartShouldSetResponderCapture?: (
+      event: import("react-native").GestureResponderEvent
+    ) => boolean;
+    onMoveShouldSetResponderCapture?: (
+      event: import("react-native").GestureResponderEvent
+    ) => boolean;
+    disabled?: boolean;
+    onPress?: (event: import("react-native").GestureResponderEvent) => void;
+    onPressIn?: (event: import("react-native").GestureResponderEvent) => void;
+    onPressOut?: (event: import("react-native").GestureResponderEvent) => void;
+    onLongPress?: (event: import("react-native").GestureResponderEvent) => void;
+    delayPressIn?: number;
+    delayPressOut?: number;
+    delayLongPress?: number;
+    id?: string;
+    marker?: string;
+    markerStart?: string;
+    markerMid?: string;
+    markerEnd?: string;
+    mask?: string;
+    font?: import("react-native-svg").FontObject;
+    fontStyle?: import("react-native-svg").FontStyle;
+    fontVariant?: import("react-native-svg").FontVariant;
+    fontWeight?: string | number;
+    fontStretch?: import("react-native-svg").FontStretch;
+    fontSize: string | number;
+    fontFamily?: string;
+    textAnchor?: import("react-native-svg").TextAnchor;
+    textDecoration?: import("react-native-svg").TextDecoration;
+    letterSpacing?: string | number;
+    wordSpacing?: string | number;
+    kerning?: string | number;
+    fontVariantLigatures?: import("react-native-svg").FontVariantLigatures;
+    fontVariationSettings?: string;
+  };
+  getPropsForVerticalLabels(): {
+    x?: import("react-native-svg").NumberArray;
+    y?: import("react-native-svg").NumberArray;
+    dx?: import("react-native-svg").NumberArray;
+    dy?: import("react-native-svg").NumberArray;
+    rotate?: import("react-native-svg").NumberArray;
+    opacity?: string | number;
+    inlineSize?: string | number;
+    alignmentBaseline?: import("react-native-svg").AlignmentBaseline;
+    baselineShift?: import("react-native-svg").BaselineShift;
+    verticalAlign?: string | number;
+    lengthAdjust?: import("react-native-svg").LengthAdjust;
+    textLength?: string | number;
+    fontData?: {
+      [name: string]: unknown;
     };
-    getPropsForVerticalLabels(): {
-        children?: React.ReactNode;
-        x?: import("react-native-svg").NumberArray;
-        y?: import("react-native-svg").NumberArray;
-        dx?: import("react-native-svg").NumberArray;
-        dy?: import("react-native-svg").NumberArray;
-        rotate?: import("react-native-svg").NumberArray;
-        opacity?: import("react-native-svg").NumberProp;
-        inlineSize?: import("react-native-svg").NumberProp;
-        alignmentBaseline?: import("react-native-svg").AlignmentBaseline;
-        baselineShift?: import("react-native-svg").BaselineShift;
-        verticalAlign?: import("react-native-svg").NumberProp;
-        lengthAdjust?: import("react-native-svg").LengthAdjust;
-        textLength?: import("react-native-svg").NumberProp;
-        fontData?: null | {
-            [name: string]: unknown;
-        };
-        fontFeatureSettings?: string;
-        color?: import("react-native").ColorValue;
-        fill: import("react-native").ColorValue;
-        fillOpacity?: import("react-native-svg").NumberProp;
-        fillRule?: import("react-native-svg").FillRule;
-        stroke?: import("react-native").ColorValue;
-        strokeWidth?: import("react-native-svg").NumberProp;
-        strokeOpacity?: import("react-native-svg").NumberProp;
-        strokeDasharray?: ReadonlyArray<import("react-native-svg").NumberProp> | import("react-native-svg").NumberProp;
-        strokeDashoffset?: import("react-native-svg").NumberProp;
-        strokeLinecap?: import("react-native-svg").Linecap;
-        strokeLinejoin?: import("react-native-svg").Linejoin;
-        strokeMiterlimit?: import("react-native-svg").NumberProp;
-        vectorEffect?: import("react-native-svg").VectorEffect;
-        clipRule?: import("react-native-svg").FillRule;
-        clipPath?: string;
-        translate?: import("react-native-svg").NumberArray;
-        translateX?: import("react-native-svg").NumberProp;
-        translateY?: import("react-native-svg").NumberProp;
-        origin?: import("react-native-svg").NumberArray;
-        originX?: import("react-native-svg").NumberProp;
-        originY?: import("react-native-svg").NumberProp;
-        scale?: import("react-native-svg").NumberArray;
-        scaleX?: import("react-native-svg").NumberProp;
-        scaleY?: import("react-native-svg").NumberProp;
-        skew?: import("react-native-svg").NumberArray;
-        skewX?: import("react-native-svg").NumberProp;
-        skewY?: import("react-native-svg").NumberProp;
-        rotation?: import("react-native-svg").NumberProp;
-        transform?: import("react-native-svg").ColumnMajorTransformMatrix | string | import("react-native").TransformsStyle["transform"];
-        pointerEvents?: "box-none" | "none" | "box-only" | "auto";
-        onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderTerminationRequest?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onResponderTerminate?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onStartShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onMoveShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        disabled?: boolean;
-        onPress?: (event: import("react-native").GestureResponderEvent) => void;
-        onPressIn?: (event: import("react-native").GestureResponderEvent) => void;
-        onPressOut?: (event: import("react-native").GestureResponderEvent) => void;
-        onLongPress?: (event: import("react-native").GestureResponderEvent) => void;
-        delayPressIn?: number;
-        delayPressOut?: number;
-        delayLongPress?: number;
-        id?: string;
-        marker?: string;
-        markerStart?: string;
-        markerMid?: string;
-        markerEnd?: string;
-        mask?: string;
-        filter?: string;
-        onLayout?: (event: import("react-native").LayoutChangeEvent) => void;
-        accessibilityLabel?: string;
-        accessible?: boolean;
-        testID?: string;
-        font?: import("react-native-svg").FontObject;
-        fontStyle?: import("react-native-svg").FontStyle;
-        fontVariant?: import("react-native-svg").FontVariant;
-        fontWeight?: import("react-native-svg").FontWeight;
-        fontStretch?: import("react-native-svg").FontStretch;
-        fontSize?: import("react-native-svg").NumberProp;
-        fontFamily?: string;
-        textAnchor?: import("react-native-svg").TextAnchor;
-        textDecoration?: import("react-native-svg").TextDecoration;
-        letterSpacing?: import("react-native-svg").NumberProp;
-        wordSpacing?: import("react-native-svg").NumberProp;
-        kerning?: import("react-native-svg").NumberProp;
-        fontVariantLigatures?: import("react-native-svg").FontVariantLigatures;
-        fontVariationSettings?: string;
+    fontFeatureSettings?: string;
+    fill: import("react-native-svg").Color;
+    fillOpacity?: string | number;
+    fillRule?: import("react-native-svg").FillRule;
+    stroke?: import("react-native-svg").Color;
+    strokeWidth?: string | number;
+    strokeOpacity?: string | number;
+    strokeDasharray?: string | number | readonly (string | number)[];
+    strokeDashoffset?: string | number;
+    strokeLinecap?: import("react-native-svg").Linecap;
+    strokeLinejoin?: "miter" | "bevel" | "round";
+    strokeMiterlimit?: string | number;
+    clipRule?: import("react-native-svg").FillRule;
+    clipPath?: string;
+    transform?:
+      | string
+      | import("react-native-svg").TransformObject
+      | import("react-native-svg").ColumnMajorTransformMatrix;
+    translate?: import("react-native-svg").NumberArray;
+    translateX?: string | number;
+    translateY?: string | number;
+    origin?: import("react-native-svg").NumberArray;
+    originX?: string | number;
+    originY?: string | number;
+    scale?: import("react-native-svg").NumberArray;
+    scaleX?: string | number;
+    scaleY?: string | number;
+    skew?: import("react-native-svg").NumberArray;
+    skewX?: string | number;
+    skewY?: string | number;
+    rotation?: string | number;
+    vectorEffect?:
+      | "none"
+      | "non-scaling-stroke"
+      | "nonScalingStroke"
+      | "default"
+      | "inherit"
+      | "uri";
+    pointerEvents?: "none" | "box-none" | "box-only" | "auto";
+    onStartShouldSetResponder?: (
+      event: import("react-native").GestureResponderEvent
+    ) => boolean;
+    onMoveShouldSetResponder?: (
+      event: import("react-native").GestureResponderEvent
+    ) => boolean;
+    onResponderEnd?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onResponderGrant?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onResponderReject?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onResponderMove?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onResponderRelease?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onResponderStart?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onResponderTerminationRequest?: (
+      event: import("react-native").GestureResponderEvent
+    ) => boolean;
+    onResponderTerminate?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onStartShouldSetResponderCapture?: (
+      event: import("react-native").GestureResponderEvent
+    ) => boolean;
+    onMoveShouldSetResponderCapture?: (
+      event: import("react-native").GestureResponderEvent
+    ) => boolean;
+    disabled?: boolean;
+    onPress?: (event: import("react-native").GestureResponderEvent) => void;
+    onPressIn?: (event: import("react-native").GestureResponderEvent) => void;
+    onPressOut?: (event: import("react-native").GestureResponderEvent) => void;
+    onLongPress?: (event: import("react-native").GestureResponderEvent) => void;
+    delayPressIn?: number;
+    delayPressOut?: number;
+    delayLongPress?: number;
+    id?: string;
+    marker?: string;
+    markerStart?: string;
+    markerMid?: string;
+    markerEnd?: string;
+    mask?: string;
+    font?: import("react-native-svg").FontObject;
+    fontStyle?: import("react-native-svg").FontStyle;
+    fontVariant?: import("react-native-svg").FontVariant;
+    fontWeight?: string | number;
+    fontStretch?: import("react-native-svg").FontStretch;
+    fontSize?: string | number;
+    fontFamily?: string;
+    textAnchor?: import("react-native-svg").TextAnchor;
+    textDecoration?: import("react-native-svg").TextDecoration;
+    letterSpacing?: string | number;
+    wordSpacing?: string | number;
+    kerning?: string | number;
+    fontVariantLigatures?: import("react-native-svg").FontVariantLigatures;
+    fontVariationSettings?: string;
+  };
+  getPropsForHorizontalLabels(): {
+    x?: import("react-native-svg").NumberArray;
+    y?: import("react-native-svg").NumberArray;
+    dx?: import("react-native-svg").NumberArray;
+    dy?: import("react-native-svg").NumberArray;
+    rotate?: import("react-native-svg").NumberArray;
+    opacity?: string | number;
+    inlineSize?: string | number;
+    alignmentBaseline?: import("react-native-svg").AlignmentBaseline;
+    baselineShift?: import("react-native-svg").BaselineShift;
+    verticalAlign?: string | number;
+    lengthAdjust?: import("react-native-svg").LengthAdjust;
+    textLength?: string | number;
+    fontData?: {
+      [name: string]: unknown;
     };
-    getPropsForHorizontalLabels(): {
-        children?: React.ReactNode;
-        x?: import("react-native-svg").NumberArray;
-        y?: import("react-native-svg").NumberArray;
-        dx?: import("react-native-svg").NumberArray;
-        dy?: import("react-native-svg").NumberArray;
-        rotate?: import("react-native-svg").NumberArray;
-        opacity?: import("react-native-svg").NumberProp;
-        inlineSize?: import("react-native-svg").NumberProp;
-        alignmentBaseline?: import("react-native-svg").AlignmentBaseline;
-        baselineShift?: import("react-native-svg").BaselineShift;
-        verticalAlign?: import("react-native-svg").NumberProp;
-        lengthAdjust?: import("react-native-svg").LengthAdjust;
-        textLength?: import("react-native-svg").NumberProp;
-        fontData?: null | {
-            [name: string]: unknown;
-        };
-        fontFeatureSettings?: string;
-        color?: import("react-native").ColorValue;
-        fill: import("react-native").ColorValue;
-        fillOpacity?: import("react-native-svg").NumberProp;
-        fillRule?: import("react-native-svg").FillRule;
-        stroke?: import("react-native").ColorValue;
-        strokeWidth?: import("react-native-svg").NumberProp;
-        strokeOpacity?: import("react-native-svg").NumberProp;
-        strokeDasharray?: ReadonlyArray<import("react-native-svg").NumberProp> | import("react-native-svg").NumberProp;
-        strokeDashoffset?: import("react-native-svg").NumberProp;
-        strokeLinecap?: import("react-native-svg").Linecap;
-        strokeLinejoin?: import("react-native-svg").Linejoin;
-        strokeMiterlimit?: import("react-native-svg").NumberProp;
-        vectorEffect?: import("react-native-svg").VectorEffect;
-        clipRule?: import("react-native-svg").FillRule;
-        clipPath?: string;
-        translate?: import("react-native-svg").NumberArray;
-        translateX?: import("react-native-svg").NumberProp;
-        translateY?: import("react-native-svg").NumberProp;
-        origin?: import("react-native-svg").NumberArray;
-        originX?: import("react-native-svg").NumberProp;
-        originY?: import("react-native-svg").NumberProp;
-        scale?: import("react-native-svg").NumberArray;
-        scaleX?: import("react-native-svg").NumberProp;
-        scaleY?: import("react-native-svg").NumberProp;
-        skew?: import("react-native-svg").NumberArray;
-        skewX?: import("react-native-svg").NumberProp;
-        skewY?: import("react-native-svg").NumberProp;
-        rotation?: import("react-native-svg").NumberProp;
-        transform?: import("react-native-svg").ColumnMajorTransformMatrix | string | import("react-native").TransformsStyle["transform"];
-        pointerEvents?: "box-none" | "none" | "box-only" | "auto";
-        onStartShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onMoveShouldSetResponder?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onResponderEnd?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderGrant?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderReject?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderMove?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderRelease?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderStart?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onResponderTerminationRequest?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onResponderTerminate?: ((event: import("react-native").GestureResponderEvent) => void) | undefined;
-        onStartShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        onMoveShouldSetResponderCapture?: ((event: import("react-native").GestureResponderEvent) => boolean) | undefined;
-        disabled?: boolean;
-        onPress?: (event: import("react-native").GestureResponderEvent) => void;
-        onPressIn?: (event: import("react-native").GestureResponderEvent) => void;
-        onPressOut?: (event: import("react-native").GestureResponderEvent) => void;
-        onLongPress?: (event: import("react-native").GestureResponderEvent) => void;
-        delayPressIn?: number;
-        delayPressOut?: number;
-        delayLongPress?: number;
-        id?: string;
-        marker?: string;
-        markerStart?: string;
-        markerMid?: string;
-        markerEnd?: string;
-        mask?: string;
-        filter?: string;
-        onLayout?: (event: import("react-native").LayoutChangeEvent) => void;
-        accessibilityLabel?: string;
-        accessible?: boolean;
-        testID?: string;
-        font?: import("react-native-svg").FontObject;
-        fontStyle?: import("react-native-svg").FontStyle;
-        fontVariant?: import("react-native-svg").FontVariant;
-        fontWeight?: import("react-native-svg").FontWeight;
-        fontStretch?: import("react-native-svg").FontStretch;
-        fontSize?: import("react-native-svg").NumberProp;
-        fontFamily?: string;
-        textAnchor?: import("react-native-svg").TextAnchor;
-        textDecoration?: import("react-native-svg").TextDecoration;
-        letterSpacing?: import("react-native-svg").NumberProp;
-        wordSpacing?: import("react-native-svg").NumberProp;
-        kerning?: import("react-native-svg").NumberProp;
-        fontVariantLigatures?: import("react-native-svg").FontVariantLigatures;
-        fontVariationSettings?: string;
-    };
-    renderHorizontalLines: (config: any) => React.JSX.Element[];
-    renderHorizontalLine: (config: any) => React.JSX.Element;
-    renderHorizontalLabels: (config: Omit<AbstractChartConfig, "data"> & {
-        data: number[];
-    }) => React.JSX.Element[];
-    renderVerticalLabels: ({ labels, width, height, paddingRight, paddingTop, horizontalOffset, stackedBar, verticalLabelRotation, formatXLabel, verticalLabelsHeightPercentage }: Pick<AbstractChartConfig, "labels" | "width" | "height" | "paddingRight" | "paddingTop" | "horizontalOffset" | "stackedBar" | "verticalLabelRotation" | "formatXLabel" | "verticalLabelsHeightPercentage">) => React.JSX.Element[];
-    renderVerticalLines: ({ data, width, height, paddingTop, paddingRight, verticalLabelsHeightPercentage }: Omit<Pick<AbstractChartConfig, "data" | "width" | "height" | "paddingRight" | "paddingTop" | "verticalLabelsHeightPercentage">, "data"> & {
-        data: number[];
-    }) => React.JSX.Element[];
-    renderVerticalLine: ({ height, paddingTop, paddingRight, verticalLabelsHeightPercentage }: Pick<AbstractChartConfig, "height" | "paddingRight" | "paddingTop" | "verticalLabelsHeightPercentage">) => React.JSX.Element;
-    renderDefs: (config: Pick<PartialBy<AbstractChartConfig, "backgroundGradientFromOpacity" | "backgroundGradientToOpacity" | "fillShadowGradient" | "fillShadowGradientOpacity" | "fillShadowGradientFrom" | "fillShadowGradientFromOpacity" | "fillShadowGradientFromOffset" | "fillShadowGradientTo" | "fillShadowGradientToOpacity" | "fillShadowGradientToOffset">, "width" | "height" | "backgroundGradientFrom" | "backgroundGradientTo" | "useShadowColorFromDataset" | "data" | "backgroundGradientFromOpacity" | "backgroundGradientToOpacity" | "fillShadowGradient" | "fillShadowGradientOpacity" | "fillShadowGradientFrom" | "fillShadowGradientFromOpacity" | "fillShadowGradientFromOffset" | "fillShadowGradientTo" | "fillShadowGradientToOpacity" | "fillShadowGradientToOffset">) => React.JSX.Element;
+    fontFeatureSettings?: string;
+    fill: import("react-native-svg").Color;
+    fillOpacity?: string | number;
+    fillRule?: import("react-native-svg").FillRule;
+    stroke?: import("react-native-svg").Color;
+    strokeWidth?: string | number;
+    strokeOpacity?: string | number;
+    strokeDasharray?: string | number | readonly (string | number)[];
+    strokeDashoffset?: string | number;
+    strokeLinecap?: import("react-native-svg").Linecap;
+    strokeLinejoin?: "miter" | "bevel" | "round";
+    strokeMiterlimit?: string | number;
+    clipRule?: import("react-native-svg").FillRule;
+    clipPath?: string;
+    transform?:
+      | string
+      | import("react-native-svg").TransformObject
+      | import("react-native-svg").ColumnMajorTransformMatrix;
+    translate?: import("react-native-svg").NumberArray;
+    translateX?: string | number;
+    translateY?: string | number;
+    origin?: import("react-native-svg").NumberArray;
+    originX?: string | number;
+    originY?: string | number;
+    scale?: import("react-native-svg").NumberArray;
+    scaleX?: string | number;
+    scaleY?: string | number;
+    skew?: import("react-native-svg").NumberArray;
+    skewX?: string | number;
+    skewY?: string | number;
+    rotation?: string | number;
+    vectorEffect?:
+      | "none"
+      | "non-scaling-stroke"
+      | "nonScalingStroke"
+      | "default"
+      | "inherit"
+      | "uri";
+    pointerEvents?: "none" | "box-none" | "box-only" | "auto";
+    onStartShouldSetResponder?: (
+      event: import("react-native").GestureResponderEvent
+    ) => boolean;
+    onMoveShouldSetResponder?: (
+      event: import("react-native").GestureResponderEvent
+    ) => boolean;
+    onResponderEnd?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onResponderGrant?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onResponderReject?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onResponderMove?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onResponderRelease?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onResponderStart?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onResponderTerminationRequest?: (
+      event: import("react-native").GestureResponderEvent
+    ) => boolean;
+    onResponderTerminate?: (
+      event: import("react-native").GestureResponderEvent
+    ) => void;
+    onStartShouldSetResponderCapture?: (
+      event: import("react-native").GestureResponderEvent
+    ) => boolean;
+    onMoveShouldSetResponderCapture?: (
+      event: import("react-native").GestureResponderEvent
+    ) => boolean;
+    disabled?: boolean;
+    onPress?: (event: import("react-native").GestureResponderEvent) => void;
+    onPressIn?: (event: import("react-native").GestureResponderEvent) => void;
+    onPressOut?: (event: import("react-native").GestureResponderEvent) => void;
+    onLongPress?: (event: import("react-native").GestureResponderEvent) => void;
+    delayPressIn?: number;
+    delayPressOut?: number;
+    delayLongPress?: number;
+    id?: string;
+    marker?: string;
+    markerStart?: string;
+    markerMid?: string;
+    markerEnd?: string;
+    mask?: string;
+    font?: import("react-native-svg").FontObject;
+    fontStyle?: import("react-native-svg").FontStyle;
+    fontVariant?: import("react-native-svg").FontVariant;
+    fontWeight?: string | number;
+    fontStretch?: import("react-native-svg").FontStretch;
+    fontSize?: string | number;
+    fontFamily?: string;
+    textAnchor?: import("react-native-svg").TextAnchor;
+    textDecoration?: import("react-native-svg").TextDecoration;
+    letterSpacing?: string | number;
+    wordSpacing?: string | number;
+    kerning?: string | number;
+    fontVariantLigatures?: import("react-native-svg").FontVariantLigatures;
+    fontVariationSettings?: string;
+  };
+  renderHorizontalLines: (config: any) => JSX.Element[];
+  renderHorizontalLine: (config: any) => JSX.Element;
+  renderHorizontalLabels: (
+    config: Pick<
+      AbstractChartConfig,
+      | "propsForBackgroundLines"
+      | "propsForLabels"
+      | "color"
+      | "labelColor"
+      | "propsForVerticalLabels"
+      | "propsForHorizontalLabels"
+      | "count"
+      | "width"
+      | "height"
+      | "paddingTop"
+      | "paddingRight"
+      | "horizontalLabelRotation"
+      | "formatYLabel"
+      | "labels"
+      | "horizontalOffset"
+      | "stackedBar"
+      | "verticalLabelRotation"
+      | "formatXLabel"
+      | "verticalLabelsHeightPercentage"
+      | "backgroundColor"
+      | "backgroundGradientFrom"
+      | "backgroundGradientFromOpacity"
+      | "backgroundGradientTo"
+      | "backgroundGradientToOpacity"
+      | "fillShadowGradient"
+      | "fillShadowGradientOpacity"
+      | "useShadowColorFromDataset"
+      | "strokeWidth"
+      | "barPercentage"
+      | "barRadius"
+      | "propsForDots"
+      | "decimalPlaces"
+      | "style"
+      | "linejoinType"
+      | "scrollableDotFill"
+      | "scrollableDotStrokeColor"
+      | "scrollableDotStrokeWidth"
+      | "scrollableDotRadius"
+      | "scrollableInfoViewStyle"
+      | "scrollableInfoTextStyle"
+      | "scrollableInfoTextDecorator"
+      | "scrollableInfoOffset"
+      | "scrollableInfoSize"
+    > & {
+      data: number[];
+    }
+  ) => JSX.Element[];
+  renderVerticalLabels: ({
+    labels,
+    width,
+    height,
+    paddingRight,
+    paddingTop,
+    horizontalOffset,
+    stackedBar,
+    verticalLabelRotation,
+    formatXLabel,
+    verticalLabelsHeightPercentage
+  }: Pick<
+    AbstractChartConfig,
+    | "labels"
+    | "width"
+    | "height"
+    | "paddingRight"
+    | "paddingTop"
+    | "horizontalOffset"
+    | "stackedBar"
+    | "verticalLabelRotation"
+    | "formatXLabel"
+    | "verticalLabelsHeightPercentage"
+  >) => JSX.Element[];
+  renderVerticalLines: ({
+    data,
+    width,
+    height,
+    paddingTop,
+    paddingRight,
+    verticalLabelsHeightPercentage
+  }: Pick<
+    Pick<
+      AbstractChartConfig,
+      | "data"
+      | "width"
+      | "height"
+      | "paddingTop"
+      | "paddingRight"
+      | "verticalLabelsHeightPercentage"
+    >,
+    | "width"
+    | "height"
+    | "paddingTop"
+    | "paddingRight"
+    | "verticalLabelsHeightPercentage"
+  > & {
+    data: number[];
+  }) => JSX.Element[];
+  renderVerticalLine: ({
+    height,
+    paddingTop,
+    paddingRight,
+    verticalLabelsHeightPercentage
+  }: Pick<
+    AbstractChartConfig,
+    "height" | "paddingRight" | "paddingTop" | "verticalLabelsHeightPercentage"
+  >) => JSX.Element;
+  renderDefs: (
+    config: Pick<
+      PartialBy<
+        AbstractChartConfig,
+        | "backgroundGradientFromOpacity"
+        | "backgroundGradientToOpacity"
+        | "fillShadowGradient"
+        | "fillShadowGradientOpacity"
+      >,
+      | "width"
+      | "height"
+      | "backgroundGradientFrom"
+      | "backgroundGradientTo"
+      | "useShadowColorFromDataset"
+      | "data"
+      | "backgroundGradientFromOpacity"
+      | "backgroundGradientToOpacity"
+      | "fillShadowGradient"
+      | "fillShadowGradientOpacity"
+    >
+  ) => JSX.Element;
 }
 export default AbstractChart;
 //# sourceMappingURL=AbstractChart.d.ts.map
