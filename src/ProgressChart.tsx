@@ -171,8 +171,8 @@ class ProgressChart extends AbstractChart<
           <Rect
             width="100%"
             height={this.props.height}
-            rx={borderRadius}
-            ry={borderRadius}
+            rx={Number(borderRadius)}
+            ry={Number(borderRadius)}
             fill="url(#backgroundGradient)"
           />
           <G
