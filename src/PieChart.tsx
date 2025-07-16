@@ -6,7 +6,6 @@ import { G, Path, Rect, Svg, Text } from "react-native-svg";
 
 import AbstractChart, { AbstractChartProps } from "./AbstractChart";
 import { hslToRgba } from "./Utils";
-// import TextWidthFinder from "./TextWidthFinder";
 
 export interface PieChartProps extends AbstractChartProps {
   data: Array<any>;
@@ -75,7 +74,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         this.state.calculating.filter(i => i.calculating === true).length ===
           0 &&
         this.props.width === prevProps.width &&
-        // !this.props.editor &&
         compareDataArrays(this.props.data, prevProps.data)
       ) {
         this.setState({
@@ -89,7 +87,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
           calculating,
           onLayout: true,
           ...this.props
-          // ...this.state
         });
       }
     }
@@ -329,9 +326,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         } else {
           const item = c.item.values;
           let percentage = item.whole;
-          // if (uppedIndices.includes(item.index)) {
-          //   percentage += 1;
-          // }
+
           if (avoidFalseZero && item.whole === 0 && item.decimal !== 0) {
             value = "<1%";
           } else {
