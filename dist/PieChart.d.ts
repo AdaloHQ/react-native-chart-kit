@@ -19,7 +19,6 @@ export interface PieChartProps extends AbstractChartProps {
 }
 type PieChartState = {
     data: Array<any>;
-    onLayout: boolean;
     calculating: Array<any>;
 };
 declare class PieChart extends AbstractChart<PieChartProps, PieChartState> {
