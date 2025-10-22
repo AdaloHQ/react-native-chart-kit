@@ -26,7 +26,6 @@ export interface PieChartProps extends AbstractChartProps {
 
 type PieChartState = {
   data: Array<any>;
-  onLayout: boolean;
   calculating: Array<any>;
 };
 
@@ -78,14 +77,12 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       ) {
         this.setState({
           calculating,
-          onLayout: false,
           ...this.props,
           ...this.state
         });
       } else {
         this.setState({
           calculating,
-          onLayout: true,
           ...this.props
         });
       }
@@ -100,7 +97,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
     }
     this.state = {
       calculating,
-      onLayout: true,
       ...props,
       labelData: this.props.data
     };
@@ -114,48 +110,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       hasLegend = true,
       avoidFalseZero = false
     } = this.props;
-
-    //TODO: move setState out of onlayout since it runs in a for loop
-    const onLayout = (e, index, fontSize, label) => {
-      if (this.state.onLayout) {
-        let width = e.nativeEvent.layout.width;
-        let target =
-          this.props.width - this.props.width * chartWidthPercentage - 84;
-        let calculating = this.state.calculating;
-
-        if (width < target) {
-          calculating[index].calculating = false;
-          this.setState({
-            calculating,
-            ...this.state
-          });
-        } else {
-          if (label.slice(-3) === "...") {
-            label = label.slice(0, -3);
-          }
-          if (isNaN(fontSize)) {
-            if (!fontSize) {
-              fontSize = "12px";
-            }
-            target = target - fontSize.split("p")[0] * 2;
-          } else {
-            target = target - fontSize * 2;
-          }
-          const numberOfCharacters = label.length;
-          const ratio = target / width;
-          const targetCharacters = Math.floor(ratio * numberOfCharacters);
-          label = `${label.slice(0, targetCharacters)}...`;
-          calculating[index].label.name = label;
-          if (label === "...") {
-            calculating[index].calculating = false;
-          }
-          this.setState({
-            calculating,
-            ...this.state
-          });
-        }
-      }
-    };
 
     const calculations = this.state.calculating.map((item, index) => {
       let {
@@ -177,7 +131,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
             <View
               key={index}
               style={{ alignSelf: "flex-start", position: "absolute" }}
-              onLayout={e => onLayout(e, index, legendFontSize, name)}
             >
               <NativeText
                 style={{
@@ -194,7 +147,6 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
             <View
               key={index}
               style={{ alignSelf: "flex-start", position: "absolute" }}
-              onLayout={e => onLayout(e, index, legendFontSize, name)}
             >
               <NativeText
                 style={{
