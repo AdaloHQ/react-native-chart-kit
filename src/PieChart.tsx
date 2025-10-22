@@ -107,6 +107,8 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
   }
 
   render() {
+    console.error('CHARTS PieChart render')
+
     const {
       style = {},
       backgroundColor,
@@ -397,6 +399,11 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
       );
     });
 
+    console.error('CHARTS PieChart this.props :', this.props)
+    console.error('CHARTS PieChart chartWidthPercentage :', chartWidthPercentage)
+    console.error('CHARTS PieChart this.props.chartConfig :', this.props.chartConfig)
+    console.error('CHARTS PieChart this.props :', this.props)
+
     return (
       <View
         style={{
@@ -413,7 +420,7 @@ class PieChart extends AbstractChart<PieChartProps, PieChartState> {
         >
           <G>
             {this.renderDefs({
-              width: this.props.height,
+              width: this.props.width,
               height: this.props.height,
               ...this.props.chartConfig
             })}
